@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SMP Daily AI Coach</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #19233f;
+        --muted: #68718a;
+        --paper: #fff6ed;
+        --panel: rgba(255, 255, 255, 0.88);
+        --line: #e7d9d0;
+        --accent: #ef5b5b;
+        --accent-dark: #c83f58;
+        --sun: #f6b94b;
+        --teal: #2a9d8f;
+        --hit: #16826b;
+        --miss: #bd4a5c;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 8% 10%, rgba(246, 185, 75, 0.32), transparent 24%),
+          radial-gradient(circle at 94% 24%, rgba(42, 157, 143, 0.22), transparent 26%),
+          linear-gradient(135deg, #fff6ed 0%, #f9e9ed 48%, #e5f3ef 100%);
+        color: var(--ink);
+        font-family: Georgia, "Times New Roman", serif;
+      }
+
+      main {
+        width: min(92vw, 760px);
+        margin: 0 auto;
+        padding: 8vh 0;
+      }
+
+      .eyebrow {
+        margin: 0 0 0.75rem;
+        color: var(--accent-dark);
+        font: 700 0.78rem/1.2 Arial, sans-serif;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 620px;
+        margin: 0;
+        font-size: clamp(2.6rem, 8vw, 5.5rem);
+        line-height: 0.94;
+        font-weight: 400;
+      }
+
+      .intro {
+        max-width: 520px;
+        margin: 1.25rem 0 2.5rem;
+        color: var(--muted);
+        font: 1.05rem/1.6 Arial, sans-serif;
+      }
+
+      .coach-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(240px, 0.8fr);
+        gap: 1rem;
+        align-items: start;
+      }
+
+      .panel {
+        padding: 1.35rem;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        box-shadow: 0 16px 40px rgba(93, 55, 78, 0.12);
+      }
+
+      .panel h2 {
+        margin: 0 0 1.2rem;
+        font-size: 1.35rem;
+        font-weight: 400;
+      }
+
+      .field { margin-bottom: 1rem; }
+
+      label {
+        display: block;
+        margin-bottom: 0.4rem;
+        font: 700 0.78rem/1.2 Arial, sans-serif;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        background: #ffffff;
+        color: var(--ink);
+        font: 1rem Arial, sans-serif;
+      }
+
+      input:focus {
+        outline: 3px solid rgba(229, 107, 79, 0.2);
+        border-color: var(--accent);
+      }
+
+      button {
+        width: 100%;
+        margin-top: 0.35rem;
+        padding: 0.85rem 1rem;
+        border: 0;
+        border-radius: 4px;
+        background: var(--accent);
+        color: #ffffff;
+        cursor: pointer;
+        font: 700 0.85rem Arial, sans-serif;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      button:hover { background: var(--accent-dark); }
+
+      .ai-response {
+        min-height: 220px;
+        padding: 1.35rem;
+        border-left: 4px solid var(--line);
+        background: rgba(255, 253, 247, 0.65);
+      }
+
+      .ai-response.hit { border-left-color: var(--hit); }
+      .ai-response.miss { border-left-color: var(--miss); }
+
+      .label-sm {
+        color: var(--muted);
+        font: 700 0.72rem/1.2 Arial, sans-serif;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .prediction {
+        margin: 0.55rem 0 1rem;
+        font-size: 1.35rem;
+        line-height: 1.2;
+      }
+
+      .coaching {
+        margin-top: 0.55rem;
+        color: var(--ink);
+        font-size: 1.05rem;
+        line-height: 1.55;
+      }
+
+      .idle .prediction,
+      .idle .coaching { color: var(--muted); }
+
+      .history-section {
+        margin-top: 1rem;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        margin-top: 1rem;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font: 0.9rem Arial, sans-serif;
+      }
+
+      th,
+      td {
+        padding: 0.75rem 0.5rem;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        white-space: nowrap;
+      }
+
+      th {
+        color: var(--muted);
+        font-size: 0.72rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .history-hit { color: var(--hit); font-weight: 700; }
+      .history-miss { color: var(--miss); font-weight: 700; }
+      .empty-history { color: var(--muted); padding: 1rem; text-align: center; }
+
+      @media (max-width: 650px) {
+        main { padding: 2.5rem 0; }
+        .coach-layout { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">SMP Daily AI Coach</p>
+      <h1>Make the day measurable.</h1>
+      <p class="intro">Enter today’s sleep, water, and steps to receive a goal prediction and a practical coaching message.</p>
+
+      <section class="coach-layout" aria-label="Daily coaching tool">
+        <form id="coachForm" class="panel">
+          <h2>Daily check-in</h2>
+          <div class="field">
+            <label for="inSleep">Sleep hours</label>
+            <input id="inSleep" type="number" min="0" max="24" step="0.1" placeholder="7.5" required />
+          </div>
+          <div class="field">
+            <label for="inWater">Water glasses</label>
+            <input id="inWater" type="number" min="0" step="1" placeholder="8" required />
+          </div>
+          <div class="field">
+            <label for="inSteps">Steps</label>
+            <input id="inSteps" type="number" min="0" step="1" placeholder="12000" required />
+          </div>
+          <button type="submit">Run prediction</button>
+        </form>
+
+        <section id="coachDisplay" class="ai-response idle" aria-live="polite">
+          <div class="label-sm">Prediction</div>
+          <div class="prediction">Waiting for your check-in.</div>
+          <div class="label-sm">Coaching</div>
+          <div class="coaching">Your result will appear here.</div>
+        </section>
+      </section>
+
+      <section class="panel history-section" aria-labelledby="history-heading">
+        <h2 id="history-heading">Session history</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Time</th>
+                <th>Sleep</th>
+                <th>Water</th>
+                <th>Steps</th>
+                <th>Outcome</th>
+                <th>Confidence</th>
+              </tr>
+            </thead>
+            <tbody id="historyTable"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="mini-projectbrowsertool.js" defer></script>
+  </body>
+</html>

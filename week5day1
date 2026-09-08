@@ -1,0 +1,138 @@
+#Every app you use pulls live data from somewhere. Weather apps fetch forecasts. Fitness trackers sync stats. Payment platforms check balances. The mechanism behind all of it is an API. This week you go from working with local files to pulling data from the internet.
+#An API (Application Programming Interface) is a set of rules that lets one program request data or actions from another program over a network. Your code sends a request to an API endpoint (a URL), and the API sends back a response, usually as JSON.
+#An API has three core parts. The endpoint is the URL you send your request to. The request is the message you send, including what you want and any parameters. The response is what comes back, usually JSON data along with a status code.
+#HTTP Methods
+APIs communicate over HTTP, the same protocol browsers use. The method tells the API what action to take.
+
+Method	What It Does	Example
+GET	Retrieve data	Fetch today's step count
+POST	Send data to create something	Log a new workout session
+PUT	Update an existing record	Update today's sleep hours
+DELETE	Remove a record	Delete a duplicate log entry
+For most of this week you will use GET. It retrieves data without changing anything on the server.
+
+Status Codes
+Every API response includes a status code. The code tells you what happened before you even look at the data.
+
+Code	Meaning
+200	OK. Request succeeded. Data is in the response.
+201	Created. Your POST successfully created a new record.
+400	Bad request. Your request had an error (wrong parameter, missing field).
+401	Unauthorized. You need an API key or your key is wrong.
+404	Not found. That endpoint or resource does not exist.
+500	Server error. The API has a problem on its end.
+Always check the status code first. A 200 means your data is there. Anything else and you need to investigate before trying to use the response body.
+
+requests is a third-party Python library that handles HTTP communication. It is not built into Python, so you install it once with pip install requests. After that, one line of code sends a request to any API endpoint in the world and returns a response object containing the status code, headers, and the data body. It is the most widely used HTTP library in Python and the standard starting point for anyone working with APIs.
+
+Many API responses have nested structure where a key's value is itself a dictionary. Chain brackets to go deeper.
+
+Nested API Data
+
+data = {
+    "user": {
+        "id": 1,
+        "name": "Sandra Weru",
+        "city": "Nairobi"
+    },
+    "metrics": {
+        "steps": 10500,
+        "sleep_hours": 8.0,
+        "bench_press_kg": 80
+    },
+    "skills": ["welding", "tiling", "copywriting"]
+}
+
+print(data["user"]["name"])
+print(data["user"]["city"])
+print(data["metrics"]["steps"])
+print(data["metrics"]["bench_press_kg"], "kg bench press")
+print("Skills:", data["skills"])
+print("First skill:", data["skills"][0])
+
+Accessing Nested Data
+Many API responses have nested structure where a key's value is itself a dictionary. Chain brackets to go deeper.
+
+Nested API Data
+
+data = {
+    "user": {
+        "id": 1,
+        "name": "Sandra Weru",
+        "city": "Nairobi"
+    },
+    "metrics": {
+        "steps": 10500,
+        "sleep_hours": 8.0,
+        "bench_press_kg": 80
+    },
+    "skills": ["welding", "tiling", "copywriting"]
+}
+
+print(data["user"]["name"])
+print(data["user"]["city"])
+print(data["metrics"]["steps"])
+print(data["metrics"]["bench_press_kg"], "kg bench press")
+print("Skills:", data["skills"])
+print("First skill:", data["skills"][0])
+
+Looping Through a List Response
+When an API returns a list of records, response.json() gives you a Python list of dictionaries. Loop through it like any list.
+
+List of API Records
+Run
+# Simulates: response.json() from /api/weekly-logs
+weekly_logs = [
+    {"day": "Monday",    "steps": 9200,  "protocol": "OMAD"},
+    {"day": "Tuesday",   "steps": 10500, "protocol": "2MAD"},
+    {"day": "Wednesday", "steps": 8800,  "protocol": "OMAD"},
+    {"day": "Thursday",  "steps": 11000, "protocol": "OMAD"},
+    {"day": "Friday",    "steps": 7600,  "protocol": "2MAD"},
+]
+
+for log in weekly_logs:
+    status = "Goal met" if log["steps"] >= 10000 else "Short"
+    print(f"{log['day']:12} {log['steps']:6} steps  {status}")
+
+Using .get() for Missing Keys
+Not every response includes every field. A user might not have logged water intake today. If you access a key that does not exist, Python raises a KeyError. Use .get() with a default to handle it safely.
+
+Safe Key Access with .get()
+Run
+records = [
+    {"name": "Patrick Njiru", "steps": 9100, "water_glasses": 7},
+    {"name": "Grace Achieng", "steps": 8400},           # no water logged
+    {"name": "Brian Kamau",   "steps": 10200, "water_glasses": 9},
+]
+
+for r in records:
+    water = r.get("water_glasses", "not logged")
+    print(f"{r['name']}: steps={r['steps']}, water={water}")
+
+The second argument to .get() is the default. If the key exists you get its value. If it does not, you get the default instead of a crash.
+
+Filtering API Results
+You rarely want everything an API returns. Filter using the list comprehension pattern from Week 3.
+
+Filter API Results
+Run
+logs = [
+    {"name": "James Omondi",  "steps": 9200,  "protocol": "OMAD"},
+    {"name": "Sandra Weru",   "steps": 10500, "protocol": "2MAD"},
+    {"name": "Patrick Njiru", "steps": 8100,  "protocol": "OMAD"},
+    {"name": "Grace Achieng", "steps": 11000, "protocol": "OMAD"},
+    {"name": "Brian Kamau",   "steps": 7400,  "protocol": "2MAD"},
+    {"name": "Kevin Mwangi",  "steps": 10800, "protocol": "OMAD"},
+]
+
+# OMAD users who hit 10,000 steps
+goal_hitters = [
+    r for r in logs
+    if r["protocol"] == "OMAD" and r["steps"] >= 10000
+]
+
+print("OMAD users who hit 10k steps:")
+for r in goal_hitters:
+    print(f"  {r['name']}: {r['steps']} steps")
+
+

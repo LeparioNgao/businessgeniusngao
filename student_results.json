@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Leuyan Lepario",
+        "scores": [
+            "90",
+            " 78",
+            " 85"
+        ],
+        "average": 84.3,
+        "grade": "B"
+    },
+    {
+        "name": "John Kamano",
+        "scores": [
+            " 78",
+            " 66",
+            null
+        ],
+        "average": 72.0,
+        "grade": "C"
+    },
+    {
+        "name": "June Wambui",
+        "scores": [
+            " 88",
+            " 75",
+            " 90"
+        ],
+        "average": 84.3,
+        "grade": "B"
+    },
+    {
+        "name": "Leo Wangai",
+        "scores": [
+            " 98",
+            " bad data",
+            " 67"
+        ],
+        "average": 82.5,
+        "grade": "B"
+    }
+]

@@ -1,0 +1,147 @@
+Git tracks every change to every file in a project. 
+It lets you go back, compare versions, and collaborate without overwriting each other's work.
+
+Version control is a system that records every change made to a file or set of files over time. 
+It lets you view the full history of a project, revert to any previous state, and work on multiple versions in parallel without conflict.
+c
+Git is the most widely used version control system. 
+GitHub is a platform for storing Git repositories online and collaborating on them. 
+Git runs on your machine. GitHub runs in the cloud. They work together but are separate tools.
+
+Tool	                    What it is	                                           Where it runs
+Git	                   Version control software	                                Your computer (local)
+GitHub	               Hosting platform for Git repositories	                Cloud (remote)
+Repository (repo)	     A project folder tracked by Git	                    Both local and remote
+Commit	           A saved snapshot of your project at a point in time	        Local first, then pushed
+
+Installing Git
+
+git --version
+git version 2.44.0
+
+
+First-Time Configuration
+Before making your first commit, tell Git who you are. This information is attached to every commit you make. You only set this once per machine.
+
+Terminal: Set your identity
+# Replace with your name and email
+git config --global user.name "Brian Otieno"
+git config --global user.email "brian@example.com"
+
+# Set VS Code as the default editor
+git config --global core.editor "code --wait"
+
+# Verify your settings
+git config --global --list
+user.name=Brian Otieno
+user.email=brian@example.com
+core.editor=code --wait
+
+Initializing a Repository.
+Definition
+git init creates a new Git repository inside the current folder.
+It adds a hidden .git folder that stores all version history.
+This command turns a regular folder into a Git-tracked project.
+
+In Terminal:
+
+# Create a new project folder
+mkdir smp-tracker
+cd smp-tracker
+
+# Initialize Git
+git init
+Initialized empty Git repository in /home/brian/smp-tracker/.git/
+
+# Check the status (nothing tracked yet)
+git status
+On branch main
+
+No commits yet
+
+nothing to commit (create/copy files and use "git add" to track)
+
+Note: git init creates the repository. It does not create a commit. The repository is empty until you add files and commit them. git status is the command you will use most frequently. Run it after every action to confirm Git sees what you expect.
+
+The .gitignore File
+Definition
+.gitignore is a plain text file in the root of your project. Each line specifies a file pattern that Git should ignore. Files matched by .gitignore are never tracked, never staged, and never committed, even if they are inside the project folder.
+
+# File: .gitignore
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+.venv/
+
+# Environment variables
+.env
+.env.local
+
+# Data files with sensitive content
+*.csv
+secrets.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code settings
+.vscode/
+
+In Terminal:
+
+# Create the .gitignore file
+touch .gitignore
+
+# Open it in VS Code and add patterns, then save
+code .gitignore
+
+# Create a file that should be ignored
+touch .env
+
+# Check status - .env should not appear
+git status
+On branch main
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .gitignore
+
+nothing added to commit but untracked files present
+
+# .env is not listed because .gitignore hides it
+Tip: Never commit a .env file. It contains API keys and database passwords. If you accidentally commit one, treat those credentials as compromised and rotate them immediately. Add .env to .gitignore before creating the file, not after.
+
+The Three Areas of Git
+Git tracks files across three areas. Understanding these three areas is the key to understanding every Git command.
+
+Working Directory
+Files on disk
+ --git add--> 
+Staging Area
+Files queued for commit
+ --git commit--> 
+Repository
+Permanent history
+Files move from disk to staging area (git add), then from staging to permanent history (git commit).
+
+Area	                        What it contains	                             How to interact
+Working directory	      All files as they currently exist on disk	             Edit in VS Code as normal
+Staging area (index)	  Files selected for the next commit	                 git add filename
+Repository (.git)	      All commits and complete history	                     git commit -m "message"
+
+Common Setup Commands Summary
+
+Command	                                      What it does	                            When to use
+git --version	                          Check installed version	              Verify Git is installed
+git config --global user.name "..."	      Set your display name	                  Once per machine
+git config --global user.email "..."	  Set your email	                      Once per machine
+git init	                              Create a new local repository	          Start of every project
+git status	                              See tracked/untracked/staged files	  After every action
+touch .gitignore	                      Create the ignore file	              Right after git init

@@ -1,0 +1,51 @@
+{
+  "total_posts": 20,
+  "posts_per_user": {
+    "1": 10,
+    "2": 10
+  },
+  "avg_title_length": 36.9,
+  "top_title_words": [
+    [
+      "et",
+      5
+    ],
+    [
+      "est",
+      4
+    ],
+    [
+      "dolorem",
+      4
+    ],
+    [
+      "aut",
+      3
+    ],
+    [
+      "provident",
+      3
+    ],
+    [
+      "optio",
+      3
+    ],
+    [
+      "qui",
+      3
+    ],
+    [
+      "molestias",
+      3
+    ],
+    [
+      "eum",
+      3
+    ],
+    [
+      "quia",
+      3
+    ]
+  ],
+  "generated_at": "2026-08-13T10:14:26.079291Z"
+}

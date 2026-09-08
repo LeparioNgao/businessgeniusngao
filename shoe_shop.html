@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stride & Carry | Shop Desk</title>
+    <style>
+      :root {
+        --ink: #18211c;
+        --muted: #6a746b;
+        --paper: #f3f0e8;
+        --panel: #fffdf8;
+        --line: #ddd9ce;
+        --green: #245942;
+        --green-light: #e3eee6;
+        --orange: #c56c35;
+        --orange-light: #f8e8d9;
+        --red: #b84b3e;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        background: radial-gradient(circle at 92% 4%, #d8e4d4 0, transparent 25%), linear-gradient(135deg, var(--paper), #e8eee7);
+        font-family: Georgia, "Times New Roman", serif;
+      }
+      button, input, select { font: inherit; }
+      button { cursor: pointer; }
+      .shell { width: min(1180px, calc(100% - 32px)); margin: auto; padding: 38px 0 60px; }
+      header { display: flex; justify-content: space-between; align-items: end; gap: 28px; margin-bottom: 30px; }
+      .eyebrow { margin: 0 0 9px; color: var(--green); font: 700 .75rem Arial, sans-serif; letter-spacing: .14em; text-transform: uppercase; }
+      h1 { margin: 0; font-size: clamp(2.6rem, 7vw, 5.5rem); font-weight: 400; line-height: .9; }
+      .subhead { max-width: 390px; margin: 0; color: var(--muted); font-size: 1.02rem; line-height: 1.5; }
+      .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 22px; }
+      .stat { padding: 17px; background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--green); border-radius: 5px; }
+      .stat strong { display: block; font-size: 1.8rem; font-weight: 400; }
+      .stat span { color: var(--muted); font: 700 .67rem Arial, sans-serif; letter-spacing: .07em; text-transform: uppercase; }
+      .grid { display: grid; grid-template-columns: minmax(270px, .72fr) minmax(0, 1.28fr); gap: 22px; align-items: start; }
+      .panel { padding: 24px; background: rgb(255 253 248 / 92%); border: 1px solid var(--line); border-radius: 7px; box-shadow: 0 14px 32px rgb(39 61 46 / 8%); }
+      .panel + .panel { margin-top: 22px; }
+      h2 { margin: 0 0 18px; font-size: 1.4rem; font-weight: 400; }
+      h3 { margin: 0; font-size: 1rem; font-weight: 400; }
+      form { display: grid; gap: 14px; }
+      label { display: grid; gap: 6px; color: var(--muted); font: 700 .72rem Arial, sans-serif; letter-spacing: .06em; text-transform: uppercase; }
+      input, select { width: 100%; padding: 11px 12px; color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 4px; outline: 0; }
+      input:focus, select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgb(36 89 66 / 14%); }
+      .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+      .primary { padding: 12px 15px; color: #fff; background: var(--green); border: 0; border-radius: 4px; font: 700 .84rem Arial, sans-serif; }
+      .primary:hover { background: #17452f; }
+      .secondary { padding: 8px 0; color: var(--red); background: transparent; border: 0; font: 700 .73rem Arial, sans-serif; }
+      .secondary:hover { text-decoration: underline; }
+      .hint, .feedback { min-height: 18px; margin: 0; color: var(--muted); font: .8rem Arial, sans-serif; }
+      .feedback { color: var(--green); }
+      .feedback.error { color: var(--red); }
+      .section-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 13px; }
+      .table-wrap { overflow-x: auto; }
+      table { width: 100%; border-collapse: collapse; font: .84rem Arial, sans-serif; }
+      th { padding: 9px 8px; color: var(--muted); border-bottom: 1px solid var(--line); font-size: .67rem; letter-spacing: .06em; text-align: left; text-transform: uppercase; }
+      td { padding: 12px 8px; border-bottom: 1px solid #ebe8df; white-space: nowrap; }
+      tr:last-child td { border-bottom: 0; }
+      .product { font-family: Georgia, serif; font-size: .95rem; white-space: normal; }
+      .category { display: block; margin-top: 3px; color: var(--muted); font-size: .7rem; }
+      .stock-low { color: var(--red); font-weight: 700; }
+      .stock-ok { color: var(--green); font-weight: 700; }
+      .pill { display: inline-block; padding: 5px 7px; border-radius: 3px; font: 700 .65rem Arial, sans-serif; text-transform: uppercase; }
+      .pill.low { color: #923c32; background: #f7dfdb; }
+      .pill.good { color: var(--green); background: var(--green-light); }
+      .sale { display: flex; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid #ebe8df; font: .82rem Arial, sans-serif; }
+      .sale:last-child { border-bottom: 0; }
+      .sale strong { display: block; margin-bottom: 4px; color: var(--ink); font-family: Georgia, serif; font-size: .97rem; font-weight: 400; }
+      .sale small { color: var(--muted); }
+      .sale-total { color: var(--green); font-weight: 700; white-space: nowrap; }
+      .empty { padding: 24px 8px; color: var(--muted); border: 1px dashed var(--line); font-style: italic; text-align: center; }
+      footer { margin-top: 24px; color: var(--muted); font: .72rem Arial, sans-serif; text-align: center; }
+      @media (max-width: 760px) { header { display: block; } .subhead { margin-top: 18px; } .grid { display: block; } .grid > .panel + .panel { margin-top: 18px; } }
+      @media (max-width: 500px) { .shell { width: calc(100% - 20px); padding-top: 25px; } .stats { grid-template-columns: 1fr 1fr; } .panel { padding: 18px 14px; } .two-col { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header>
+        <div>
+          <p class="eyebrow">Stride & Carry / Shop desk</p>
+          <h1>Today in<br />the shop.</h1>
+        </div>
+        <p class="subhead">A simple daily record for rubber shoes, bags, and official shoes. Sales and stock remain saved in this browser.</p>
+      </header>
+
+      <section class="stats" aria-label="Today's summary">
+        <div class="stat"><strong id="sales-total">KES 0</strong><span>Sales today</span></div>
+        <div class="stat"><strong id="sales-count">0</strong><span>Items sold</span></div>
+        <div class="stat"><strong id="customer-count">0</strong><span>Customers today</span></div>
+        <div class="stat"><strong id="low-stock-count">0</strong><span>Need restocking</span></div>
+      </section>
+
+      <div class="grid">
+        <div>
+          <section class="panel">
+            <h2>Record a sale</h2>
+            <form id="sale-form">
+              <label>Product
+                <select id="sale-product" required></select>
+              </label>
+              <div class="two-col">
+                <label>Size
+                  <select id="sale-size" required></select>
+                </label>
+                <label>Quantity
+                  <input id="sale-quantity" type="number" min="1" max="20" value="1" required />
+                </label>
+              </div>
+              <label>Customer name <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span>
+                <input id="sale-customer" type="text" maxlength="60" placeholder="Walk-in customer" />
+              </label>
+              <p class="hint" id="sale-price"></p>
+              <button class="primary" type="submit">Save sale</button>
+              <p class="feedback" id="sale-feedback" aria-live="polite"></p>
+            </form>
+          </section>
+
+          <section class="panel">
+            <h2>Customers today</h2>
+            <form id="customer-form">
+              <label>Number of customers
+                <input id="customers" type="number" min="0" step="1" required placeholder="e.g. 18" />
+              </label>
+              <button class="primary" type="submit">Update customer count</button>
+              <p class="feedback" id="customer-feedback" aria-live="polite"></p>
+            </form>
+          </section>
+
+          <section class="panel">
+            <h2>Stock adjustment</h2>
+            <form id="stock-form">
+              <label>Product
+                <select id="stock-product" required></select>
+              </label>
+              <div class="two-col">
+                <label>Size
+                  <select id="stock-size" required></select>
+                </label>
+                <label>New quantity
+                  <input id="stock-quantity" type="number" min="0" max="999" required />
+                </label>
+              </div>
+              <button class="primary" type="submit">Update stock</button>
+              <p class="feedback" id="stock-feedback" aria-live="polite"></p>
+            </form>
+          </section>
+        </div>
+
+        <div>
+          <section class="panel">
+            <div class="section-head"><h2>Restock watch</h2><button class="secondary" id="reset-button" type="button">Reset demo data</button></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Product</th><th>Size</th><th>Price</th><th>Stock</th><th>Status</th></tr></thead>
+                <tbody id="stock-list"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="section-head"><h2>Today's sales</h2><button class="secondary" id="clear-sales" type="button">Clear sales</button></div>
+            <div id="sales-list"></div>
+          </section>
+        </div>
+      </div>
+      <footer>All records are stored locally with localStorage. Prices are in Kenya shillings.</footer>
+    </main>
+
+    <script>
+      const STORAGE_KEY = "stride-carry-shop";
+      const sizes = [36, 37, 38, 39, 40, 41, 42, 43, 44, 45];
+      const products = [
+        { id: "rubber-men", name: "Street Runner", category: "Male rubber shoes", price: 900, sizes: true },
+        { id: "rubber-women", name: "City Flex", category: "Female rubber shoes", price: 850, sizes: true },
+        { id: "bag-canvas", name: "Everyday Carry", category: "Bags", price: 750, sizes: false },
+        { id: "bag-compact", name: "Compact Tote", category: "Bags", price: 650, sizes: false },
+        { id: "official-men", name: "Classic Formal", category: "Official male shoes", price: 1500, sizes: true }
+      ];
+      const initialStock = products.flatMap((product) => (product.sizes ? sizes : ["ONE"]).map((size) => ({ productId: product.id, size: String(size), quantity: product.sizes ? (size === 39 || size === 40 ? 2 : 5) : 5, reorderAt: 2 })));
+      const defaultState = () => ({ stock: initialStock, sales: [], customers: 0 });
+      const readState = () => JSON.parse(localStorage.getItem(STORAGE_KEY) || "null") || defaultState();
+      const writeState = (state) => localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      const money = (value) => `KES ${Number(value).toLocaleString()}`;
+      const product = (id) => products.find((item) => item.id === id);
+      const stockItem = (state, productId, size) => state.stock.find((item) => item.productId === productId && item.size === String(size));
+
+      const saleProduct = document.querySelector("#sale-product");
+      const saleSize = document.querySelector("#sale-size");
+      const stockProduct = document.querySelector("#stock-product");
+      const stockSize = document.querySelector("#stock-size");
+      const fillProducts = (select) => { products.forEach((item) => { const option = new Option(`${item.name} / ${item.category}`, item.id); select.add(option); }); };
+      fillProducts(saleProduct); fillProducts(stockProduct);
+      const fillSizes = (select, productId) => { select.replaceChildren(); const item = product(productId); (item.sizes ? sizes : ["ONE"]).forEach((size) => select.add(new Option(size === "ONE" ? "One size" : size, size))); };
+      const refreshSizeMenus = () => { fillSizes(saleSize, saleProduct.value); fillSizes(stockSize, stockProduct.value); updateSalePrice(); };
+      const updateSalePrice = () => { const item = product(saleProduct.value); const stock = stockItem(readState(), saleProduct.value, saleSize.value); document.querySelector("#sale-price").textContent = `${money(item.price)} each  /  ${stock ? `${stock.quantity} available` : ""}`; };
+      saleProduct.addEventListener("change", refreshSizeMenus); stockProduct.addEventListener("change", () => { fillSizes(stockSize, stockProduct.value); updateStockQuantity(); }); saleSize.addEventListener("change", updateSalePrice);
+      const updateStockQuantity = () => { const stock = stockItem(readState(), stockProduct.value, stockSize.value); document.querySelector("#stock-quantity").value = stock ? stock.quantity : 0; };
+      stockSize.addEventListener("change", updateStockQuantity);
+
+      const render = () => {
+        const state = readState();
+        const revenue = state.sales.reduce((sum, sale) => sum + sale.total, 0);
+        const units = state.sales.reduce((sum, sale) => sum + sale.quantity, 0);
+        const low = state.stock.filter((item) => item.quantity <= item.reorderAt).length;
+        document.querySelector("#sales-total").textContent = money(revenue); document.querySelector("#sales-count").textContent = units; document.querySelector("#customer-count").textContent = state.customers; document.querySelector("#low-stock-count").textContent = low;
+        const stockList = document.querySelector("#stock-list"); stockList.replaceChildren();
+        state.stock.forEach((stock) => { const item = product(stock.productId); const row = document.createElement("tr"); row.innerHTML = `<td class="product">${item.name}<span class="category">${item.category}</span></td><td>${stock.size === "ONE" ? "One size" : stock.size}</td><td>${money(item.price)}</td><td class="${stock.quantity <= stock.reorderAt ? "stock-low" : "stock-ok"}">${stock.quantity}</td><td><span class="pill ${stock.quantity <= stock.reorderAt ? "low" : "good"}">${stock.quantity <= stock.reorderAt ? "Restock" : "In stock"}</span></td>`; stockList.append(row); });
+        const salesList = document.querySelector("#sales-list"); salesList.replaceChildren();
+        if (!state.sales.length) { const empty = document.createElement("div"); empty.className = "empty"; empty.textContent = "No sales recorded today."; salesList.append(empty); } else { [...state.sales].reverse().forEach((sale) => { const item = product(sale.productId); const record = document.createElement("div"); record.className = "sale"; record.innerHTML = `<div><strong>${item.name} / ${sale.size === "ONE" ? "One size" : sale.size}</strong><small>${sale.quantity} item${sale.quantity === 1 ? "" : "s"}  /  ${sale.customer || "Walk-in customer"}  /  ${new Date(sale.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</small></div><span class="sale-total">${money(sale.total)}</span>`; salesList.append(record); }); }
+        updateSalePrice(); updateStockQuantity();
+      };
+
+      document.querySelector("#sale-form").addEventListener("submit", (event) => { event.preventDefault(); const state = readState(); const productId = saleProduct.value; const size = saleSize.value; const quantity = Number(document.querySelector("#sale-quantity").value); const stock = stockItem(state, productId, size); const feedback = document.querySelector("#sale-feedback"); if (quantity > stock.quantity) { feedback.className = "feedback error"; feedback.textContent = `Only ${stock.quantity} available in this size.`; return; } stock.quantity -= quantity; const item = product(productId); state.sales.push({ productId, size, quantity, customer: document.querySelector("#sale-customer").value.trim(), total: item.price * quantity, createdAt: new Date().toISOString() }); writeState(state); event.target.reset(); feedback.className = "feedback"; feedback.textContent = "Sale recorded."; render(); });
+      document.querySelector("#customer-form").addEventListener("submit", (event) => { event.preventDefault(); const state = readState(); state.customers = Number(document.querySelector("#customers").value); writeState(state); document.querySelector("#customer-feedback").textContent = "Customer count updated."; render(); });
+      document.querySelector("#stock-form").addEventListener("submit", (event) => { event.preventDefault(); const state = readState(); const stock = stockItem(state, stockProduct.value, stockSize.value); stock.quantity = Number(document.querySelector("#stock-quantity").value); writeState(state); document.querySelector("#stock-feedback").textContent = "Stock updated."; render(); });
+      document.querySelector("#clear-sales").addEventListener("click", () => { const state = readState(); state.sales = []; writeState(state); render(); });
+      document.querySelector("#reset-button").addEventListener("click", () => { if (window.confirm("Reset stock, sales, and customer count?")) { writeState(defaultState()); render(); } });
+      refreshSizeMenus(); render();
+    </script>
+  </body>
+</html>

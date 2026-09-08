@@ -1,0 +1,16 @@
+{
+  "week": "2024-W47",
+  "members": {
+    "total": 6,
+    "goal_met": 3,
+    "avg_steps": 9500
+  },
+  "weekly": {
+    "best_day": "Thu",
+    "total_steps": 428400
+  },
+  "skills": {
+    "active": 5,
+    "most_popular": "copywriting"
+  }
+}

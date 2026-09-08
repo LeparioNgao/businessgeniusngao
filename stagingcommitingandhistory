@@ -1,0 +1,23 @@
+A commit is a permanent snapshot of your project. This lesson covers how to create commits correctly, write useful messages, and read the project history.
+
+Staging files with git add
+git add moves files from the working directory into the staging area. The staging area is a preparation zone. You choose exactly which changes go into the next commit. Files in the staging area are described as "staged" or "indexed."
+
+# Stage a single file
+git add tracker.py
+
+# Stage multiple specific files
+git add tracker.py config.py README.md
+
+# Stage all changes in the current directory
+git add .
+
+# Check what is staged
+git status
+On branch main
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   .gitignore
+        new file:   README.md
+        new file:   tracker.py

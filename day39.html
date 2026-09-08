@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily Check-in</title>
+    <style>
+      :root {
+        --ink: #17221b;
+        --muted: #647066;
+        --paper: #f7f4ec;
+        --panel: #fffdf8;
+        --line: #dedbd0;
+        --green: #2f6b4f;
+        --green-dark: #214936;
+        --yellow: #f2c94c;
+        --red: #b64d3c;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 8% 8%, #dcebd2 0, transparent 28%),
+          linear-gradient(135deg, #f7f4ec 0%, #e9efe5 100%);
+        font-family: Georgia, "Times New Roman", serif;
+      }
+
+      button, input { font: inherit; }
+      button { cursor: pointer; }
+
+      .shell {
+        width: min(1080px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 48px 0 64px;
+      }
+
+      header {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 32px;
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        color: var(--green);
+        font: 700 0.78rem/1.2 Arial, sans-serif;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h1 { margin: 0; font-size: clamp(2.4rem, 7vw, 5.4rem); line-height: 0.95; font-weight: 400; }
+      .intro { max-width: 420px; margin: 0; color: var(--muted); font-size: 1.05rem; line-height: 1.5; }
+
+      .layout { display: grid; grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr); gap: 22px; align-items: start; }
+      .panel { padding: 26px; background: rgb(255 253 248 / 88%); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 14px 35px rgb(42 62 45 / 8%); }
+      .panel h2 { margin: 0 0 20px; font-size: 1.45rem; font-weight: 400; }
+
+      form { display: grid; gap: 16px; }
+      label { display: grid; gap: 7px; color: var(--muted); font: 700 0.78rem/1.2 Arial, sans-serif; letter-spacing: 0.05em; text-transform: uppercase; }
+      input { width: 100%; padding: 12px 13px; color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 4px; outline: none; }
+      input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgb(47 107 79 / 14%); }
+      .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .primary { padding: 13px 16px; color: #fff; background: var(--green); border: 0; border-radius: 4px; font: 700 0.9rem Arial, sans-serif; }
+      .primary:hover { background: var(--green-dark); }
+      .message { min-height: 20px; margin: 0; color: var(--green); font: 0.9rem Arial, sans-serif; }
+      .message.error { color: var(--red); }
+
+      .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px; }
+      .stat { padding: 14px; background: #f0f4ec; border-left: 3px solid var(--green); }
+      .stat strong { display: block; font-size: 1.7rem; font-weight: 400; }
+      .stat span { color: var(--muted); font: 0.7rem Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.06em; }
+      .entries-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+      .entries-header h2 { margin: 0; }
+      .clear { padding: 7px 0; color: var(--red); background: transparent; border: 0; font: 700 0.75rem Arial, sans-serif; }
+      .clear:hover { text-decoration: underline; }
+      .entry-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+      .entry { display: grid; grid-template-columns: 1fr auto; gap: 14px; padding: 16px; background: #fff; border: 1px solid var(--line); border-radius: 4px; animation: appear 300ms ease both; }
+      .entry-name { margin: 0 0 7px; font-size: 1.15rem; }
+      .entry-date { color: var(--muted); font: 0.76rem Arial, sans-serif; }
+      .metrics { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 12px; color: var(--muted); font: 0.82rem Arial, sans-serif; }
+      .badge { align-self: start; padding: 6px 8px; color: var(--green-dark); background: #e5f0df; border-radius: 3px; font: 700 0.68rem Arial, sans-serif; text-transform: uppercase; }
+      .badge.missed { color: #8b4c23; background: #f7e8c7; }
+      .empty { padding: 28px 12px; color: var(--muted); text-align: center; border: 1px dashed var(--line); font-style: italic; }
+      footer { margin-top: 24px; color: var(--muted); font: 0.75rem Arial, sans-serif; text-align: center; }
+
+      @keyframes appear { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+      @media (max-width: 720px) {
+        .shell { padding-top: 28px; }
+        header, .layout { display: block; }
+        .intro { margin-top: 18px; }
+        .panel + .panel { margin-top: 18px; }
+      }
+      @media (max-width: 420px) {
+        .shell { width: min(100% - 20px, 1080px); }
+        .panel { padding: 20px 16px; }
+        .form-row, .stats { grid-template-columns: 1fr; }
+        .entry { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header>
+        <div>
+          <p class="eyebrow">Day 39 / Browser storage</p>
+          <h1>Daily check-in</h1>
+        </div>
+        <p class="intro">Record a few signals from your day. Everything stays in this browser, with no API or server required.</p>
+      </header>
+
+      <div class="layout">
+        <section class="panel" aria-labelledby="form-title">
+          <h2 id="form-title">Add a check-in</h2>
+          <form id="checkin-form">
+            <label>Name
+              <input id="name" name="name" type="text" placeholder="Your name" required maxlength="60" />
+            </label>
+            <div class="form-row">
+              <label>Sleep (hours)
+                <input id="sleep" name="sleep" type="number" min="0" max="24" step="0.1" placeholder="7.5" required />
+              </label>
+              <label>Water (glasses)
+                <input id="water" name="water" type="number" min="0" max="100" step="1" placeholder="8" required />
+              </label>
+            </div>
+            <label>Steps
+              <input id="steps" name="steps" type="number" min="0" max="100000" step="1" placeholder="10000" required />
+            </label>
+            <button class="primary" type="submit">Save check-in</button>
+            <p class="message" id="message" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="panel" aria-labelledby="entries-title">
+          <div class="stats" aria-label="Check-in summary">
+            <div class="stat"><strong id="total-count">0</strong><span>Total entries</span></div>
+            <div class="stat"><strong id="goal-count">0</strong><span>Goals hit</span></div>
+            <div class="stat"><strong id="average-steps">0</strong><span>Average steps</span></div>
+          </div>
+          <div class="entries-header">
+            <h2 id="entries-title">Your entries</h2>
+            <button class="clear" id="clear-button" type="button">Clear all</button>
+          </div>
+          <ul class="entry-list" id="entry-list"></ul>
+        </section>
+      </div>
+      <footer>Saved locally with localStorage</footer>
+    </main>
+
+    <script>
+      const STORAGE_KEY = "day39-checkins";
+      const form = document.querySelector("#checkin-form");
+      const list = document.querySelector("#entry-list");
+      const message = document.querySelector("#message");
+      const totalCount = document.querySelector("#total-count");
+      const goalCount = document.querySelector("#goal-count");
+      const averageSteps = document.querySelector("#average-steps");
+
+      const readCheckIns = () => JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      const saveCheckIns = (checkIns) => localStorage.setItem(STORAGE_KEY, JSON.stringify(checkIns));
+
+      const render = () => {
+        const checkIns = readCheckIns();
+        const goals = checkIns.filter((checkIn) => checkIn.hitGoal).length;
+        const average = checkIns.length
+          ? Math.round(checkIns.reduce((sum, checkIn) => sum + checkIn.steps, 0) / checkIns.length)
+          : 0;
+
+        totalCount.textContent = checkIns.length;
+        goalCount.textContent = goals;
+        averageSteps.textContent = average.toLocaleString();
+        list.replaceChildren();
+
+        if (!checkIns.length) {
+          const empty = document.createElement("li");
+          empty.className = "empty";
+          empty.textContent = "No check-ins yet. Your first one starts the record.";
+          list.append(empty);
+          return;
+        }
+
+        [...checkIns].reverse().forEach((checkIn) => {
+          const item = document.createElement("li");
+          item.className = "entry";
+          const details = document.createElement("div");
+          const name = document.createElement("p");
+          name.className = "entry-name";
+          name.textContent = checkIn.name;
+          const date = document.createElement("div");
+          date.className = "entry-date";
+          date.textContent = new Date(checkIn.createdAt).toLocaleString();
+          const metrics = document.createElement("div");
+          metrics.className = "metrics";
+          metrics.textContent = `${checkIn.sleep}h sleep  /  ${checkIn.water} glasses  /  ${checkIn.steps.toLocaleString()} steps`;
+          details.append(name, date, metrics);
+
+          const badge = document.createElement("span");
+          badge.className = `badge${checkIn.hitGoal ? "" : " missed"}`;
+          badge.textContent = checkIn.hitGoal ? "Goal hit" : "Keep going";
+          item.append(details, badge);
+          list.append(item);
+        });
+      };
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const data = new FormData(form);
+        const checkIn = {
+          name: data.get("name").trim(),
+          sleep: Number(data.get("sleep")),
+          water: Number(data.get("water")),
+          steps: Number(data.get("steps")),
+          hitGoal: Number(data.get("steps")) >= 10000,
+          createdAt: new Date().toISOString()
+        };
+        const checkIns = readCheckIns();
+        checkIns.push(checkIn);
+        saveCheckIns(checkIns);
+        form.reset();
+        message.className = "message";
+        message.textContent = "Check-in saved in this browser.";
+        render();
+      });
+
+      document.querySelector("#clear-button").addEventListener("click", () => {
+        if (!readCheckIns().length) return;
+        if (window.confirm("Clear all locally saved check-ins?")) {
+          localStorage.removeItem(STORAGE_KEY);
+          message.className = "message";
+          message.textContent = "All check-ins cleared.";
+          render();
+        }
+      });
+
+      render();
+    </script>
+  </body>
+</html>

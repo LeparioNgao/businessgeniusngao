@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Momentum Bulk | Daily Fitness Predictor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --ink: #17211b;
+        --muted: #68756e;
+        --paper: #f3f1e8;
+        --panel: #fffdf7;
+        --line: #d7ddd1;
+        --green: #1f6b4f;
+        --green-bright: #72c06d;
+        --orange: #df7444;
+        --red: #b24e4e;
+        --shadow: 0 18px 50px rgba(42, 62, 45, 0.1);
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        background: var(--paper);
+        font-family: "Space Grotesk", sans-serif;
+      }
+      body::before {
+        position: fixed;
+        z-index: -1;
+        inset: 0;
+        content: "";
+        opacity: 0.45;
+        background-image: linear-gradient(rgba(31, 107, 79, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(31, 107, 79, 0.045) 1px, transparent 1px);
+        background-size: 32px 32px;
+      }
+      main { width: min(94vw, 1220px); margin: 0 auto; padding: 4rem 0 5rem; }
+      .topline { display: flex; justify-content: space-between; gap: 1rem; align-items: center; margin-bottom: 3rem; }
+      .eyebrow, .label, th, .model-note { font: 500 0.72rem/1.2 "DM Mono", monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+      .eyebrow { color: var(--green); margin: 0; }
+      .storage-note { color: var(--muted); font: 0.76rem "DM Mono", monospace; }
+      .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 0.65fr); gap: 4rem; align-items: end; margin-bottom: 2.5rem; }
+      h1 { max-width: 760px; margin: 0; font-size: clamp(3rem, 7vw, 6.8rem); line-height: 0.88; letter-spacing: -0.06em; font-weight: 600; }
+      .intro { max-width: 540px; margin: 1.4rem 0 0; color: var(--muted); font-size: 1.05rem; line-height: 1.55; }
+      .forecast { padding: 1.4rem; border: 1px solid var(--ink); background: var(--green); color: #f6f7ea; box-shadow: var(--shadow); transform: rotate(1deg); }
+      .forecast .label { color: #b9dfac; }
+      .forecast-number { margin: 0.55rem 0 0.25rem; font-size: clamp(2.4rem, 5vw, 4.5rem); line-height: 0.95; }
+      .forecast-copy { margin: 0; color: #dce9d5; font-size: 0.86rem; line-height: 1.45; }
+      .dashboard { display: grid; grid-template-columns: minmax(340px, 0.82fr) minmax(340px, 1.18fr); gap: 1rem; align-items: start; }
+      .panel { padding: 1.5rem; border: 1px solid var(--line); background: rgba(255, 253, 247, 0.9); box-shadow: var(--shadow); }
+      h2 { margin: 0 0 1.3rem; font-size: 1.3rem; font-weight: 600; letter-spacing: -0.03em; }
+      .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem 0.8rem; }
+      .field-wide { grid-column: 1 / -1; }
+      label { display: block; margin-bottom: 0.4rem; color: var(--muted); font: 500 0.72rem "DM Mono", monospace; text-transform: uppercase; }
+      input { width: 100%; padding: 0.8rem 0.75rem; border: 1px solid var(--line); border-radius: 2px; background: #fff; color: var(--ink); font: 1rem "Space Grotesk", sans-serif; }
+      input:focus { outline: 3px solid rgba(114, 192, 109, 0.3); border-color: var(--green); }
+      .field-help { display: block; margin-top: 0.35rem; color: var(--muted); font-size: 0.72rem; }
+      button { width: 100%; margin-top: 1.25rem; padding: 0.95rem 1rem; border: 0; border-radius: 2px; background: var(--orange); color: white; cursor: pointer; font: 600 0.78rem "DM Mono", monospace; letter-spacing: 0.06em; text-transform: uppercase; }
+      button:hover { background: #bf5932; }
+      .result { min-height: 270px; border-top: 5px solid var(--line); }
+      .result.on-target { border-top-color: var(--green-bright); }
+      .result.needs-action { border-top-color: var(--orange); }
+      .result.error { border-top-color: var(--red); }
+      .result-kicker { color: var(--muted); font: 500 0.72rem "DM Mono", monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+      .result-title { margin: 0.65rem 0; font-size: clamp(1.8rem, 4vw, 3.1rem); line-height: 0.98; letter-spacing: -0.05em; }
+      .result-summary { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+      .result-coaching { margin-top: 1.4rem; padding: 1rem; background: #edf4e9; font-size: 1rem; line-height: 1.45; }
+      .result-meta { margin-top: 1.3rem; color: var(--green); font: 500 0.75rem "DM Mono", monospace; }
+      .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.65rem; margin: 1rem 0; }
+      .stat { padding: 0.8rem; background: #eef1e8; }
+      .stat-value { display: block; margin-top: 0.35rem; font-size: 1.5rem; font-weight: 600; }
+      .model-note { color: var(--muted); line-height: 1.5; text-transform: none; letter-spacing: 0; }
+      .history-section { margin-top: 1rem; }
+      .history-head { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
+      .clear-button { width: auto; margin: 0; padding: 0.5rem 0.7rem; background: transparent; color: var(--red); border: 1px solid #e3bebe; }
+      .clear-button:hover { background: #fff0ed; }
+      .table-wrap { overflow-x: auto; }
+      table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+      th, td { padding: 0.8rem 0.55rem; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
+      th { color: var(--muted); font-size: 0.66rem; }
+      .status-good { color: var(--green); font-weight: 600; }
+      .status-action { color: var(--orange); font-weight: 600; }
+      .empty-history { padding: 1.5rem; color: var(--muted); text-align: center; }
+      @media (max-width: 800px) {
+        main { padding-top: 2.2rem; }
+        .topline, .hero { display: block; }
+        .storage-note { margin-top: 0.7rem; }
+        .hero { margin-bottom: 2rem; }
+        .forecast { margin-top: 2rem; transform: none; }
+        .dashboard { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 480px) {
+        .form-grid { grid-template-columns: 1fr; }
+        .field-wide { grid-column: auto; }
+        .stats { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="topline">
+        <p class="eyebrow">12-week bulk / personal data lab</p>
+        <span class="storage-note">Records stored on this device</span>
+      </div>
+
+      <section class="hero">
+        <div>
+          <h1>Build mass.<br />Keep momentum.</h1>
+          <p class="intro">Log the small signals that make a bulk work: food, movement, hydration, sleep, and training. Your personal forecast gets sharper with every day you record.</p>
+        </div>
+        <aside id="forecastCard" class="forecast" aria-live="polite">
+          <span class="label">12-week forecast</span>
+          <div id="forecastValue" class="forecast-number">Waiting</div>
+          <p id="forecastCopy" class="forecast-copy">Log your first day to create a baseline and see the direction of your bulk.</p>
+        </aside>
+      </section>
+
+      <section class="dashboard" aria-label="Daily fitness tracker">
+        <form id="fitnessForm" class="panel">
+          <h2>Today's check-in</h2>
+          <div class="form-grid">
+            <div class="field">
+              <label for="fitnessDate">Date</label>
+              <input id="fitnessDate" type="date" required />
+            </div>
+            <div class="field">
+              <label for="bodyWeight">Body weight</label>
+              <input id="bodyWeight" type="number" min="30" max="300" step="0.1" placeholder="72.5" required />
+              <span class="field-help">kg</span>
+            </div>
+            <div class="field">
+              <label for="calories">Food intake</label>
+              <input id="calories" type="number" min="500" max="10000" step="1" placeholder="2900" required />
+              <span class="field-help">daily calories</span>
+            </div>
+            <div class="field">
+              <label for="protein">Protein</label>
+              <input id="protein" type="number" min="0" max="500" step="1" placeholder="150" required />
+              <span class="field-help">grams</span>
+            </div>
+            <div class="field">
+              <label for="steps">Steps</label>
+              <input id="steps" type="number" min="0" max="100000" step="1" placeholder="8000" required />
+            </div>
+            <div class="field">
+              <label for="water">Water</label>
+              <input id="water" type="number" min="0" max="20" step="0.1" placeholder="2.5" required />
+              <span class="field-help">litres</span>
+            </div>
+            <div class="field">
+              <label for="sleep">Sleep</label>
+              <input id="sleep" type="number" min="0" max="24" step="0.1" placeholder="8" required />
+              <span class="field-help">hours</span>
+            </div>
+            <div class="field">
+              <label for="workout">Workout</label>
+              <input id="workout" type="number" min="0" max="360" step="5" placeholder="60" required />
+              <span class="field-help">minutes</span>
+            </div>
+          </div>
+          <button type="submit">Save day and get verdict</button>
+        </form>
+
+        <section id="resultPanel" class="panel result" aria-live="polite">
+          <div class="result-kicker">Your adaptive verdict</div>
+          <h2 class="result-title">Ready when you are.</h2>
+          <p class="result-summary">The first entry establishes your personal baseline. Future verdicts will compare today with your targets and recent habits.</p>
+          <div class="result-coaching">Consistency beats a perfect day. Record the real day, then make the next useful choice.</div>
+          <div class="result-meta">Model status: awaiting first record</div>
+        </section>
+      </section>
+
+      <section class="panel history-section">
+        <div class="history-head">
+          <h2>Progress record</h2>
+          <button id="clearHistory" class="clear-button" type="button">Clear records</button>
+        </div>
+        <div class="stats" aria-label="Progress summary">
+          <div class="stat"><span class="label">Days logged</span><strong id="daysLogged" class="stat-value">0</strong></div>
+          <div class="stat"><span class="label">Consistency</span><strong id="consistencyScore" class="stat-value">--</strong></div>
+          <div class="stat"><span class="label">Weight trend</span><strong id="weightTrend" class="stat-value">--</strong></div>
+        </div>
+        <p class="model-note">Prediction uses a transparent weighted score: calories and protein drive expected mass gain, while sleep, water, steps, and workouts measure recovery and routine consistency. It is a coaching estimate, not medical advice.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Date</th><th>Weight</th><th>Calories</th><th>Protein</th><th>Steps</th><th>Water</th><th>Sleep</th><th>Workout</th><th>Verdict</th><th>Score</th></tr></thead>
+            <tbody id="historyTable"><tr><td colspan="10" class="empty-history">No days logged yet.</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    <script src="momfitness.js"></script>
+  </body>
+</html>

@@ -1,0 +1,78 @@
+{
+  "report_type": "logistics_control_tower",
+  "generated_at": "2026-08-25T13:48:00+00:00",
+  "kpis": {
+    "shipments": 4,
+    "weight_kg": 2150,
+    "on_time_proxy_percent": 75.0,
+    "fleet_utilization_percent": 59.7,
+    "route_efficiency_percent": 94.7,
+    "warehouse_load_events": 4
+  },
+  "data_quality": {
+    "issues": [],
+    "issue_count": 0
+  },
+  "source_counts": {
+    "shipments": 4,
+    "vehicles": 3,
+    "tracking_events": 13,
+    "warehouse_events": 8
+  },
+  "shipments": [
+    {
+      "shipment_id": "SHP-1002",
+      "current_status": "in_transit",
+      "last_location": "A109 checkpoint",
+      "event_count": 4,
+      "minutes_until_promise": -10.0,
+      "estimated_delay_minutes": 10.0,
+      "temperature_breaches": 2,
+      "missing_expected_scan": false,
+      "risk_score": 60
+    },
+    {
+      "shipment_id": "SHP-1001",
+      "current_status": "in_transit",
+      "last_location": "A109 checkpoint",
+      "event_count": 3,
+      "minutes_until_promise": 120.0,
+      "estimated_delay_minutes": 0.0,
+      "temperature_breaches": 0,
+      "missing_expected_scan": false,
+      "risk_score": 0
+    },
+    {
+      "shipment_id": "SHP-1003",
+      "current_status": "in_transit",
+      "last_location": "A104 checkpoint",
+      "event_count": 3,
+      "minutes_until_promise": 300.0,
+      "estimated_delay_minutes": 0.0,
+      "temperature_breaches": 0,
+      "missing_expected_scan": false,
+      "risk_score": 0
+    },
+    {
+      "shipment_id": "SHP-1004",
+      "current_status": "in_transit",
+      "last_location": "A104 checkpoint",
+      "event_count": 3,
+      "minutes_until_promise": 420.0,
+      "estimated_delay_minutes": 0.0,
+      "temperature_breaches": 0,
+      "missing_expected_scan": false,
+      "risk_score": 0
+    }
+  ],
+  "exception_queue": [
+    {
+      "shipment_id": "SHP-1002",
+      "priority": "high",
+      "risk_score": 60,
+      "reason": "2 cold-chain temperature breach(es)",
+      "owner": "cold-chain control",
+      "recommended_action": "Quarantine or inspect the shipment and notify the customer under the cold-chain SOP."
+    }
+  ]
+}

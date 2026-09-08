@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jua Kali Order Board</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 24px;
+        background: #f6f8fa;
+        color: #1f2937;
+      }
+
+      .panel {
+        max-width: 700px;
+        background: white;
+        border: 1px solid #dfe3e8;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      h2 {
+        margin-top: 0;
+      }
+
+      form {
+        display: grid;
+        gap: 12px;
+      }
+
+      label {
+        font-weight: 600;
+      }
+
+      input,
+      button {
+        padding: 10px 12px;
+        font-size: 1rem;
+      }
+
+      button {
+        background: #0f766e;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #115e59;
+      }
+
+      #summary {
+        margin-top: 20px;
+        font-weight: 600;
+      }
+
+      ul {
+        padding-left: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="panel">
+      <h2>Jua Kali Order Board</h2>
+
+      <form id="orderForm">
+        <div>
+          <label for="clientName">Client Name</label><br />
+          <input id="clientName" type="text" placeholder="Wanjiku Homes" required />
+        </div>
+
+        <div>
+          <label for="jobType">Job Type</label><br />
+          <input id="jobType" type="text" placeholder="Sliding gate" required />
+        </div>
+
+        <div>
+          <label for="quoteKes">Quote (KES)</label><br />
+          <input id="quoteKes" type="number" min="0" step="1" placeholder="32000" required />
+        </div>
+
+        <button type="submit">Add Order</button>
+      </form>
+
+      <div id="summary">Total quoted today: KES 0</div>
+      <ul id="orderList"></ul>
+    </div>
+
+    <script src="juakaliORDERBOARD_browser.js"></script>
+  </body>
+</html>

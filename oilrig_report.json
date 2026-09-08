@@ -1,0 +1,82 @@
+{
+  "report_type": "oil_rig_condition_monitoring",
+  "generated_at": "2026-08-25T13:41:58.443150+00:00",
+  "window": {
+    "start": "2026-08-25T05:41:00+00:00",
+    "end": "2026-08-25T13:41:00+00:00"
+  },
+  "data_quality": {
+    "accepted_readings": 128,
+    "rejected_readings": 0,
+    "issues": []
+  },
+  "summary": {
+    "assets_monitored": 4,
+    "alerts": 1,
+    "critical_alerts": 1,
+    "warning_alerts": 0
+  },
+  "asset_features": [
+    {
+      "asset_id": "COMP-301",
+      "sample_count": 32,
+      "average_temperature_c": 71.28496288886409,
+      "average_pressure_bar": 117.83683647450991,
+      "average_vibration_mm_s": 3.9685137678025475,
+      "average_flow_m3_h": 205.07347723066312,
+      "latest_vibration_mm_s": 4.417593601445805,
+      "vibration_change_mm_s": 0.10598703550159261,
+      "pressure_stdev_bar": 1.2360457621375462,
+      "flow_change_percent": 2.2876217485694963
+    },
+    {
+      "asset_id": "P-101",
+      "sample_count": 32,
+      "average_temperature_c": 70.63585592342412,
+      "average_pressure_bar": 118.31600923584575,
+      "average_vibration_mm_s": 4.024761365616429,
+      "average_flow_m3_h": 205.9056438837177,
+      "latest_vibration_mm_s": 3.7771087643941974,
+      "vibration_change_mm_s": 0.15476279788203406,
+      "pressure_stdev_bar": 1.9446087835161052,
+      "flow_change_percent": -0.5582858836035364
+    },
+    {
+      "asset_id": "P-102",
+      "sample_count": 32,
+      "average_temperature_c": 73.3305938580669,
+      "average_pressure_bar": 117.77179672504211,
+      "average_vibration_mm_s": 7.088021712454888,
+      "average_flow_m3_h": 199.4398269201808,
+      "latest_vibration_mm_s": 16.524326603020015,
+      "vibration_change_mm_s": 12.364058527585383,
+      "pressure_stdev_bar": 2.154305908217225,
+      "flow_change_percent": -12.02207668104807
+    },
+    {
+      "asset_id": "SEP-201",
+      "sample_count": 32,
+      "average_temperature_c": 71.07199629317539,
+      "average_pressure_bar": 117.6682186343082,
+      "average_vibration_mm_s": 3.9596783944843814,
+      "average_flow_m3_h": 204.93416073788353,
+      "latest_vibration_mm_s": 4.636319087532217,
+      "vibration_change_mm_s": 0.5507888092975222,
+      "pressure_stdev_bar": 1.7378590106727756,
+      "flow_change_percent": 0.13694669465285159
+    }
+  ],
+  "alerts": [
+    {
+      "asset_id": "P-102",
+      "severity": "critical",
+      "score": 90,
+      "reasons": [
+        "high latest vibration (16.5 mm/s)",
+        "vibration rose 12.4 mm/s",
+        "flow fell 12.0%"
+      ],
+      "recommended_action": "Escalate to the control-room and maintenance teams; follow the approved emergency procedure."
+    }
+  ]
+}

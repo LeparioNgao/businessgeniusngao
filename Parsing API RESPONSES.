@@ -1,0 +1,6 @@
+Most APIs return more data than you need, in a structure that is messier than you expect. Parsing means pulling the specific values out, handling missing fields, and shaping the data into something clean. This is what most API work actually looks like.
+Parsing means reading a raw data structure and extracting the specific values you need. An API response can have dictionaries inside dictionaries inside lists. You navigate it layer by layer using chained bracket access and .get() for safety.
+APIs sometimes return null in JSON, which becomes None in Python. If you try to access a key on None, you get a TypeError. Check for None before going deeper.
+
+A common pattern: the API returns a list of records. Loop through each one and pull only the fields you want. Build a clean list from the raw data.
+Many APIs return data in pages. Instead of sending 10,000 records at once, they send 100 at a time and include a next_page key. In a script you would loop, checking for None to stop. Here you see the response structure.
