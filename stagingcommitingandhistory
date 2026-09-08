@@ -21,3 +21,150 @@ Changes to be committed:
         new file:   .gitignore
         new file:   README.md
         new file:   tracker.py
+
+
+Tip: git add . stages everything that is not in .gitignore. It is fast but imprecise. Use git add filename when you want to separate unrelated changes into different commits. One commit should represent one logical change.
+
+Committing without git commit
+
+git commit takes everything in the staging area and saves it as a permanent snapshot in the repository. Each commit gets a unique hash (a 40-character hex string), a timestamp, an author, and a message.
+
+# Commit with an inline message
+git commit -m "Add SMP tracker script with daily check-in logic"
+[main (root-commit) a1b2c3d] Add SMP tracker script with daily check-in logic
+ 3 files changed, 84 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 README.md
+ create mode 100644 tracker.py
+
+# Stage and commit all tracked files in one step
+git commit -am "Fix step count calculation off-by-one error"
+# Note: -a only stages already-tracked files, not new files
+
+Writing Good Commit Messages
+
+A commit message is the only communication between you-now and you-in-six-months. Write it for someone who knows the project but has no idea what you just changed or why.
+
+Format rule	                                      Good example	                             Bad example
+Start with a verb (imperative)	             Add member check-in endpoint	           Added some stuff to the API
+Under 72 characters for the title	         Fix null error in goal calculation	       Fixed that bug where it crashes
+No full stop at the end of title	         Update .gitignore to exclude .env	    Update .gitignore to exclude .env.
+Present tense, not past tense	             Remove duplicate validation check	    Removed duplicate validation check
+Explain why, not just what	              Use median instead of mean (skewed data)	      Change mean to median
+
+Note: For a longer explanation, leave the -m flag off. Git opens the editor (VS Code if configured). The first line is the summary. Leave a blank line. Write the full explanation below. This is called a multi-line commit message.
+
+Viewing History with git log
+
+git log shows the full list of commits in the current branch, from newest to oldest. Each entry shows the commit hash, author, date, and message.
+
+# Full log
+git log
+commit d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3
+Author: Brian Otieno <brian@example.com>
+Date:   Wed Jul 15 09:22:14 2026 +0300
+
+    Add weekly summary report to dashboard
+
+commit a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b
+Author: Brian Otieno <brian@example.com>
+Date:   Tue Jul 14 17:45:01 2026 +0300
+
+    Add SMP tracker script with daily check-in logic
+
+# Compact one-line format
+git log --oneline
+d4e5f6a Add weekly summary report to dashboard
+a1b2c3d Add SMP tracker script with daily check-in logic
+
+# Show only last 5 commits
+git log --oneline -5
+
+# Show what changed in each commit
+git log --stat
+
+The short hash (first 7 characters) is all you need to reference a commit in other commands. Git is smart enough to find the full hash from the first few characters, as long as they are unique in the repository.
+
+Seeing What Changed
+
+# Show unstaged changes (what you changed but have not yet added)
+git diff
+diff --git a/tracker.py b/tracker.py
+index 3a4b5c6..7d8e9f0 100644
+--- a/tracker.py
++++ b/tracker.py
+@@ -12,7 +12,7 @@ def assess_day(steps):
+-    return steps >= 10000
++    return steps >= 10000 and steps is not None
+
+# Show staged changes (what is ready to commit)
+git diff --staged
+
+# Show all changes in a specific commit
+git show a1b2c3d
+
+# Compare two commits
+git diff a1b2c3d d4e5f6a
+
+Tip: In diff output, lines starting with - were removed. Lines starting with + were added. Lines with neither were unchanged context. Green in most terminals = added. Red = removed.
+
+Undoing Changes
+Situation	                                   Command	                       What happens
+Discard unsaved edits in a file	           git restore filename	           File reverts to last committed state
+Remove a file from staging	            git restore --staged filename	   File stays edited but leaves staging area
+Undo last commit (keep changes)	           git reset HEAD~1	         Commit removed; changes back to working directory
+View old version of a file	           git show a1b2c3d:tracker.py	       Prints the file as it was at that commit\
+
+Warning: git reset --hard HEAD~1 permanently discards the last commit AND all its changes. There is no undo for this. Use git reset HEAD~1 (without --hard) if you want to uncommit but keep your edits.
+
+A Complete Workflow Example
+
+# 1. Check current state
+git status
+On branch main
+Changes not staged for commit:
+        modified:   tracker.py
+Untracked files:
+        api_client.py
+
+# 2. Stage both files
+git add tracker.py api_client.py
+
+# 3. Verify what is staged
+git status
+On branch main
+Changes to be committed:
+        modified:   tracker.py
+        new file:   api_client.py
+
+# 4. Commit
+git commit -m "Add API client module and fix tracker null check"
+[main f1e2d3c] Add API client module and fix tracker null check
+ 2 files changed, 47 insertions(+), 1 deletion(-)
+
+# 5. Confirm clean state
+git status
+On branch main
+nothing to commit, working tree clean
+
+# 6. View history
+git log --oneline
+f1e2d3c Add API client module and fix tracker null check
+d4e5f6a Add weekly summary report to dashboard
+a1b2c3d Add SMP tracker script with daily check-in logic
+
+In your smp-tracker project from Day 41, create three files: tracker.py, README.md, and .gitignore. Write one line in each. Stage and commit them all in a single commit. Then edit tracker.py and make a second commit with only that change. Run git log --oneline and verify you see two separate commits.
+
+Commands Reference
+Command	                             Purpose
+git add .	                     Stage all changes
+git add filename	             Stage one file
+git commit -m "msg"	             Commit staged changes
+git commit -am "msg"	         Stage tracked files and commit in one step
+git log	                         Full commit history
+git log --oneline	             Compact history, one line per commit
+git diff	                     Unstaged changes
+git diff --staged	             Staged changes
+git show <hash>	                 Full diff of a specific commit
+git restore filename	         Discard working-directory edits
+git restore --staged filename	 Unstage a file
