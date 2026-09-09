@@ -1,0 +1,160 @@
+A branch is a separate line of development. It lets you work on a new feature without touching the main codebase until the work is ready.
+
+A branch is a lightweight pointer to a specific commit. When you create a branch, Git creates a new pointer at the current commit. From that point, commits on the new branch and commits on the original branch diverge independently. Neither branch affects the other until you merge them.
+
+main ----o----o----o-----------o---> (after merge)
+              \
+               feature --o--o--o--/ (branch merged in)
+main stays untouched while feature work happens on its own line. After merge, feature commits become part of main's history.
+
+Creating and Switching Branches.
+
+# See all branches (current branch marked with *)
+git branch
+* main
+
+# Create a new branch
+git branch feature/api-dashboard
+
+# Switch to it
+git switch feature/api-dashboard
+Switched to branch 'feature/api-dashboard'
+
+# Create AND switch in one command (preferred)
+git switch -c feature/coaching-module
+Switched to a new branch 'feature/coaching-module'
+
+# Confirm current branch
+git branch
+  feature/api-dashboard
+* feature/coaching-module
+  main
+
+# Switch back to main
+git switch main
+
+Tip: Use a naming convention for branches. Common patterns are feature/description for new features, fix/description for bug fixes, and chore/description for non-code tasks like updating dependencies. Consistent names make it clear what each branch is for before you even open it.
+
+Making Commits on a Branch.
+
+Commits on a branch are completely isolated from other branches. The files on disk change when you switch branches. Git swaps the files out automatically.
+
+# Start on main, create feature branch
+git switch -c feature/coaching-module
+
+# Create a new file on this branch
+touch coaching.py
+echo "def get_coaching(sleep, water, steps): pass" > coaching.py
+
+# Stage and commit on the feature branch
+git add coaching.py
+git commit -m "Add coaching module skeleton"
+[feature/coaching-module 3c4d5e6] Add coaching module skeleton
+ 1 file changed, 1 insertion(+)
+
+# Switch back to main
+git switch main
+
+# coaching.py does not exist on main
+ls
+README.md  tracker.py  .gitignore
+
+# Switch back to feature branch - coaching.py reappears
+git switch feature/coaching-module
+ls
+README.md  coaching.py  tracker.py  .gitignore
+
+Merging Branches.
+
+git merge takes the commits from one branch and applies them to another. You always merge INTO the current branch. To merge a feature branch into main, switch to main first, then run git merge feature-branch-name.
+
+# Step 1: Switch to main
+git switch main
+Switched to branch 'main'
+
+# Step 2: Merge the feature branch
+git merge feature/coaching-module
+Updating a1b2c3d..3c4d5e6
+Fast-forward
+ coaching.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+# coaching.py is now on main
+ls
+README.md  coaching.py  tracker.py  .gitignore
+
+# Step 3: Delete the feature branch (optional, keeps things clean)
+git branch -d feature/coaching-module
+Deleted branch feature/coaching-module (was 3c4d5e6).
+
+# View merged history
+git log --oneline
+3c4d5e6 Add coaching module skeleton
+f1e2d3c Add API client module and fix tracker null check
+a1b2c3d Add SMP tracker script with daily check-in logic
+
+Note: Fast-forward merge happens when main has no new commits since the branch was created. Git simply moves the main pointer forward to the tip of the feature branch. No merge commit is created. The history stays linear.
+
+Merge Conflicts
+
+A merge conflict happens when two branches both changed the same line of the same file. Git cannot decide automatically which version is correct. It pauses the merge and marks the conflicting sections in the file with conflict markers. You resolve the conflict by editing the file manually, then committing.
+
+# Inside tracker.py after a conflict, Git inserts markers:
+
+<<<<<<< HEAD
+def assess_day(steps):
+    return steps >= 10000
+=======
+def assess_day(steps, goal=10000):
+    return steps >= goal
+>>>>>>> feature/flexible-goal
+
+# HEAD = your current branch (main)
+# Everything between === and >>> = the incoming branch changes
+# Decision: pick one, combine both, or write something new
+# Then delete all marker lines and save
+
+
+In Terminal:
+
+# Git shows the conflict
+git merge feature/flexible-goal
+Auto-merging tracker.py
+CONFLICT (content): Merge conflict in tracker.py
+Automatic merge failed; fix conflicts and then commit the result.
+
+# Open the file, edit it, remove conflict markers, save
+code tracker.py
+
+# After resolving: stage the file
+git add tracker.py
+
+# Complete the merge with a commit
+git commit -m "Merge feature/flexible-goal: add configurable goal parameter"
+[main 7a8b9c0] Merge feature/flexible-goal: add configurable goal parameter
+
+Tip: VS Code has a built-in merge conflict editor. When a conflicted file is open, VS Code shows buttons above each conflict section: "Accept Current Change," "Accept Incoming Change," "Accept Both Changes," and "Compare Changes." These buttons edit and clean the file for you. Use them instead of manually removing markers.
+
+Branch Strategy for Solo Projects.
+
+Branch	                        Purpose	                                   Rule
+main	              Production-ready code at all times	       Never commit directly to main
+feature/x	          One feature or change	                       Branch from main, merge back when done
+fix/x	              Bug fix	                                   Branch from main, merge immediately after testing
+
+Try This:
+In your smp-tracker project, create a branch called feature/weekly-report. On that branch, create a file called report.py and add two lines of code. Commit it. Switch back to main and confirm report.py is gone. Switch back to the feature branch and confirm it returns. Then merge the branch into main and delete the feature branch.
+
+Commands Reference
+
+Command	                             Purpose
+git branch	                  List all local branches
+git branch name	              Create a new branch
+git switch name	              Switch to an existing branch
+git switch -c name	          Create and switch in one command
+git merge branch-name	      Merge named branch into current branch
+git branch -d name	          Delete a merged branch
+git branch -D name	          Force-delete (even if unmerged)
+git log --oneline --graph	  Visual branch history
+
+Same Concept, Different Context: A Jua Kali craftsman testing a new gate hinge design sketches it in a separate notebook before adopting it on client jobs. That notebook is a branch. If the design works, it merges into the main workflow. If not, the notebook is closed and discarded. The main process stays untouched throughout. git branch creates the notebook. git merge adopts the design. git branch -d discards it.
