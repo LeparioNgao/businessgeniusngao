@@ -1,2 +1,2 @@
-def assess_day(steps):
-   return steaps >== 10000
+def assess_day(steps, goal=10000):
+    return steps >= goal
