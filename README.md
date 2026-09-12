@@ -1,117 +1,108 @@
-# Machine Learning Masterclass
+Machine Learning Masterclass
 
-A practical machine learning learning path covering Python, data analysis, model development, APIs, Git, and portfolio projects.
+A practical collection of Python exercises, API data-processing lessons, and machine learning projects developed during the Machine Learning Masterclass.
 
-This repository contains lesson notes, exercises, notebooks, experiments, and completed projects developed throughout the masterclass.
+Featured Work
 
-## Learning Objectives
+API Response Parsing
 
-- Write clean and reusable Python code
-- Analyse and visualise datasets
-- Prepare data for machine learning
-- Train and evaluate supervised learning models
-- Build practical machine learning tools
-- Expose models through APIs
-- Use Git and GitHub professionally
-- Document and publish portfolio projects
+[`Apiresponses.py`](./Apiresponses.py)
 
-## Repository Structure
+A Python lesson demonstrating how to work with nested API responses and JSON-like data.
 
-```text
-program/
-├── week-01/
-├── week-02/
-├── week-03/
-├── ...
-├── week-09/
-│   └── Githubportfolio
-└── projects/
+Topics covered:
+
+- Navigating nested dictionaries
+- Handling optional `None` values
+- Filtering and transforming records
+- Processing paginated responses
+- Calculating weekly statistics
+- Flattening nested data
+- Parsing X API-style responses
+- Calculating engagement rates
+
+Run it with:
+
+```bash
+python3 Apiresponses.py
 ```
 
-Each weekly folder contains the notes, exercises, and practical work for that stage of the course.
+GitHub Portfolio Lesson
 
-## Featured Projects
+[`program/week-09/Githubportfolio`](./program/week-09/Githubportfolio)
 
-| Project | Description | Technologies |
-|---|---|---|
-| [SMP Tracker](./projects/smp-tracker) | Predicts daily goal achievement and generates coaching messages | Python, pandas, scikit-learn |
-| [API Dashboard](./projects/api-dashboard) | Collects data through API endpoints and produces reports | Python, FastAPI, pandas |
-| [Browser Coach](./projects/browser-coach) | Client-side coaching tool running in the browser | JavaScript, HTML, CSS |
-| [Data Analysis Report](./projects/data-analysis-report) | Analyses fitness data and compares weekly performance | Python, NumPy, pandas |
+A lesson about presenting machine learning work professionally on GitHub.
 
-## Setup
+Topics covered:
+
+- Creating a GitHub profile README
+- Writing project README files
+- Selecting repositories to pin
+- Maintaining useful commit history
+- Using branches and pull requests
+- Preparing projects for employers and clients
+
+Repository Structure
+
+```text
+.
+├── Apiresponses.py
+└── program/
+    └── week-09/
+        └── Githubportfolio
+```
+
+Additional projects will be added here after their folders, entry points, and run instructions have been verified.
+
+Quick Start
 
 Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/machine-learning-masterclass.git
-cd machine-learning-masterclass
+git clone YOUR-REPOSITORY-URL
+cd "MACHINE LEARNING MASTERCLASS"
 ```
 
-Create and activate a virtual environment:
+Run the API response parsing example:
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
+python3 Apiresponses.py
 ```
 
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-## Running the Notebooks
-
-Start Jupyter:
-
-```bash
-jupyter notebook
-```
-
-Open the relevant weekly folder and run the notebooks in order.
-
-## Technology Stack
+ Technology
 
 - Python
-- Jupyter
-- NumPy
-- pandas
-- Matplotlib
-- scikit-learn
-- FastAPI
-- JavaScript
+- JSON and API response handling
+- Data transformation
+- Statistical calculations
 - Git and GitHub
+- Machine learning concepts
 
-## Progress
+ Project Documentation Standard
 
-- [x] Python fundamentals
-- [x] Data analysis with pandas
-- [x] Git and GitHub workflow
-- [ ] Exploratory data analysis
-- [ ] Supervised machine learning
-- [ ] Model evaluation
-- [ ] API deployment
-- [ ] Portfolio publication
+Each completed project should include:
 
-## Development Workflow
+- A clear project README
+- The problem it solves
+- Setup instructions
+- A run command
+- Example output
+- Dependencies
+- Limitations and possible improvements
 
-Each project should include:
+Progress
 
-- A clear README
-- Reproducible setup instructions
-- A `.gitignore` file
-- Descriptive commit messages
-- Example output or screenshots
-- Tests where appropriate
+- [x] Python data structures
+- [x] Nested API response parsing
+- [x] Data filtering and transformation
+- [x] Pagination concepts
+- [x] API-style data analysis
+- [x] GitHub portfolio planning
+- [ ] Add verified machine learning projects
+- [ ] Add project-specific README files
+- [ ] Add tests
+- [ ] Publish selected projects on GitHub
 
-## Author
+Author
 
-**Filicentlepario**
-
-- GitHub: LeparioNgao(https://github.com/LeparioNgao)
-- Portfolio: [YOUR-PORTFOLIO-LINK]
-
-## License
-
-This repository is for educational and portfolio purposes.
+Filicent Lepario
