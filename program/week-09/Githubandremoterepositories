@@ -1,1 +1,138 @@
 A remote repository is a copy of your project hosted online. Push your local commits to GitHub to back them up, share them, and deploy from them.
+
+Local vs Remote
+
+A remote repository is a version of your project that lives on a server. GitHub, GitLab, and Bitbucket are the most common platforms. The remote is not automatically in sync with your local repository. You push and pull manually to synchronize them.
+
+Local Repo (your computer)
+git add / git commit
+-- git push -->
+<-- git pull --
+Remote Repo (GitHub)
+github.com/username/repo
+Push sends local commits to GitHub. Pull downloads remote commits to your machine. The two are never synced automatically.
+
+Setting up Github Authentication.
+GitHub no longer accepts password authentication for git operations. You use a Personal Access Token (PAT) or SSH keys. SSH is more convenient for daily work because you authenticate once per machine.
+
+# Step 1: Generate an SSH key pair
+ssh-keygen -t ed25519 -C "brian@example.com"
+# Press Enter to accept default file location
+# Press Enter twice for no passphrase (or set one for extra security)
+
+# Step 2: Copy the public key to clipboard
+# Mac:
+cat ~/.ssh/id_ed25519.pub | pbcopy
+# Windows (Git Bash):
+cat ~/.ssh/id_ed25519.pub | clip
+# Linux:
+cat ~/.ssh/id_ed25519.pub
+# (then manually copy the output)
+
+# Step 3: Go to github.com
+# Settings > SSH and GPG keys > New SSH key
+# Paste your public key and save
+
+# Step 4: Test the connection
+ssh -T git@github.com
+Hi brianotieno! You've successfully authenticated, but GitHub does not provide shell access.
+
+
+Tip: Your public key (id_ed25519.pub) is safe to share. It is designed to be public. Your private key (id_ed25519) never leaves your machine. Never paste, upload, or share the private key file.
+
+Connecting A Local Repo to Github.
+
+Create a new repository on GitHub. Go to github.com, click the + icon, then "New repository." Name it, leave it empty (no README, no .gitignore), and click Create. GitHub gives you a URL like git@github.com:username/repo-name.git
+
+In your local project, add GitHub as the remote origin: git remote add origin git@github.com:username/smp-tracker.git
+
+Push your local main branch to GitHub: git push -u origin main. The -u flag links your local main to the remote main. After this first push, you only need git push.
+
+# Add the remote (replace URL with yours from GitHub)
+git remote add origin git@github.com:brianotieno/smp-tracker.git
+
+# Confirm the remote is set
+git remote -v
+origin  git@github.com:brianotieno/smp-tracker.git (fetch)
+origin  git@github.com:brianotieno/smp-tracker.git (push)
+
+# Push main branch and set upstream
+git push -u origin main
+Enumerating objects: 6, done.
+Counting objects: 100% (6/6), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (6/6), 842 bytes | 842.00 KiB/s, done.
+Branch 'main' set up to track remote branch 'main' from 'origin'.
+ * [new branch]      main -> origin/main
+
+ The Daily Push/Pull Workflow
+
+ # Start of work: pull any remote changes (important on shared repos)
+git pull
+Already up to date.
+
+# Do your work, stage, commit as normal
+git add .
+git commit -m "Add daily step trend calculation"
+
+# Push to GitHub
+git push
+Enumerating objects: 5, done.
+To git@github.com:brianotieno/smp-tracker.git
+   3c4d5e6..7f8a9b0  main -> origin/main
+
+# Push a feature branch to GitHub
+git push -u origin feature/coaching-module
+Branch 'feature/coaching-module' set up to track remote branch 'feature/coaching-module' from 'origin'.
+ * [new branch]      feature/coaching-module -> origin/feature/coaching-module
+
+ Cloning an Exisiting respository.
+
+ git clone downloads a full copy of a remote repository to your machine, including all commits and branches. It automatically sets the remote as "origin." Use this when starting work on a project that already exists on GitHub.
+
+ # Clone via SSH (preferred if SSH is set up)
+git clone git@github.com:brianotieno/smp-tracker.git
+Cloning into 'smp-tracker'...
+remote: Enumerating objects: 12, done.
+Receiving objects: 100% (12/12), done.
+
+# Clone via HTTPS (works without SSH setup)
+git clone https://github.com/brianotieno/smp-tracker.git
+
+# Clone into a specific folder name
+git clone git@github.com:brianotieno/smp-tracker.git my-tracker
+
+Pull Requests
+
+A pull request (PR) is a GitHub feature, not a Git command. It is a request to merge one branch into another, reviewed on GitHub's interface. You push a feature branch to GitHub, then open a PR from that branch into main. The PR shows the diff, allows comments, and records the merge decision.
+
+
+The pull request workflow is the standard for team collaboration and for contributing to open source projects:
+
+Create a feature branch locally: git switch -c feature/step-prediction
+
+Do the work, commit it.
+
+Push the branch to GitHub: git push -u origin feature/step-prediction
+
+On GitHub, click "Compare & pull request." Write a description, then click "Create pull request."
+
+Review the diff. If all good, click "Merge pull request." The branch is merged into main on GitHub.
+
+Pull the merge back locally: git switch main then git pull. Delete the local feature branch: git branch -d feature/step-prediction.
+
+Try This:
+Create a new repository on GitHub called smp-tracker. Connect your local smp-tracker project to it with git remote add origin. Push all commits with git push -u origin main. Refresh the GitHub page and confirm your files and commit history appear.
+
+Commands Reference
+
+Command	                                             Purpose
+git remote add origin URL	                  Link local repo to GitHub
+git remote -v	                              Show configured remotes
+git push -u origin main	                      First push (sets upstream)
+git push	                                  Push current branch to remote
+git pull	                                  Download and merge remote changes
+git fetch	                                  Download remote changes without merging
+git clone URL	                              Download a full remote repo
+git push -u origin branch	                  Push a new branch to GitHub

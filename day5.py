@@ -18,7 +18,7 @@ for steps in daily_steps:
 average_steps = total_steps / len(daily_steps)
 print(f"Your average steps for the week is: {average_steps}")
 
-#a while loop to count how many consecutive days fromthe start hit the target before the first miss
+#a while loop to count how many consecutive days from the start hit the target before the first miss
 consecutive_days = 0
 i = 0
 while i < len(daily_steps) and daily_steps[i] >= minimum_steps:
