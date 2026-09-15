@@ -1,0 +1,108 @@
+What is a Portfolio for?
+
+A developer portfolio is a collection of work samples presented specifically to demonstrate capability to a target client or employer. Every item in a portfolio should answer: "Here is a problem I solved and how I solved it." It is not a resume. It is evidence.
+
+The Four Sections Every Developer Portfolio Needs
+
+1. Who You Are (one paragraph)
+Your name, what you specialize in, and who you help. Not your life story. One clear paragraph that tells a client in ten seconds whether you are relevant to their problem.
+
+2. What You Build (project showcase)
+Three to six projects. Each one shows what problem was solved, what tools were used, and what the output looks like. Code links and live demos where possible.
+
+3. What You Offer (services)
+A specific list of services, not a vague claim of skills. "I build data pipelines in Python" is a service. "Python developer" is a category. Day 47 covers this in detail.
+
+4. How to Reach You (contact)
+One clear call to action. Email, LinkedIn, or a contact form. Not three different options that create decision fatigue.
+
+Writing the Project Description
+Each project entry needs four elements: the problem, the solution, the tools, and the result. Keep it under five sentences. Clients do not read long descriptions. They scan for relevance.
+
+Element	                Question it answers	                                     Example
+Problem	        What was broken or missing?	     "Manually tracking 28 days of fitness data took 30 minutes per week."
+
+Solution	        What did you build?	         "Automated daily check-in tool that predicts goal achievement and generates coaching."
+
+Tools	         What technology did you use?	            "Python, scikit-learn, FastAPI, pandas."
+
+Result	              What changed?	             "Reduced reporting time to under 30 seconds. Outputs a full week summary in one command."
+
+Generating a Portfolio Summary with Python
+
+The terminal below generates a formatted portfolio summary from a structured data dictionary. This is the same pattern you would use to auto-generate a portfolio page from a database or CMS.
+
+projects = [
+    {
+        "title":   "SMP Performance Coach",
+        "problem": "Manually tracking fitness data and writing coaching notes took 30+ minutes per day.",
+        "solution":"Automated pipeline that trains a classifier on 28 days of data, predicts daily goal achievement, and generates a coaching message.",
+        "tools":   ["Python", "scikit-learn", "pandas", "FastAPI"],
+        "result":  "Prediction + coaching in under 2 seconds. Exports weekly JSON report.",
+        "github":  "github.com/brianotieno/smp-tracker",
+        "type":    "ML + API"
+    },
+    {
+        "title":   "Multi-Endpoint API Dashboard",
+        "problem": "Three separate data sources with no unified view. Reporting was manual and inconsistent.",
+        "solution":"Dashboard that fetches from three endpoints, processes each independently, and outputs a combined summary with protocol comparison.",
+        "tools":   ["Python", "requests", "pandas"],
+        "result":  "Single command produces a full multi-source report. Reduced prep time by 90%.",
+        "github":  "github.com/brianotieno/api-dashboard",
+        "type":    "Data Pipeline"
+    },
+    {
+        "title":   "Browser-Based AI Coach",
+        "problem": "Clients needed a way to get coaching feedback without installing software.",
+        "solution":"Client-side JavaScript tool. Prediction engine and coaching generator run entirely in the browser. No server required.",
+        "tools":   ["JavaScript", "DOM API", "Fetch API"],
+        "result":  "Zero setup for end users. Works on any device with a browser.",
+        "github":  "github.com/brianotieno/browser-coach",
+        "type":    "Web Tool"
+    },
+]
+
+SEPARATOR = "=" * 64
+
+print(SEPARATOR)
+print("  DEVELOPER PORTFOLIO SUMMARY")
+print(SEPARATOR)
+
+for i, p in enumerate(projects, 1):
+    print(f"\nProject {i}: {p['title']}  [{p['type']}]")
+    print(f"  Problem:  {p['problem']}")
+    print(f"  Solution: {p['solution']}")
+    print(f"  Tools:    {', '.join(p['tools'])}")
+    print(f"  Result:   {p['result']}")
+    print(f"  Code:     {p['github']}")
+
+print()
+print(SEPARATOR)
+print(f"  Total projects: {len(projects)}")
+all_tools = set(t for p in projects for t in p["tools"])
+print(f"  Tech stack:     {', '.join(sorted(all_tools))}")
+print(SEPARATOR)
+
+
+What Not to Include
+
+What to leave out	                                                  Why
+Incomplete or broken projects	                  A broken demo signals unreliability faster than any explanation
+Tutorial projects with no modification	          Cloned code shows you can follow directions. Not that you can build.
+Projects without a README	                      Undocumented code looks abandoned
+More than six projects	                          Dilutes the strongest work. Quality over quantity.
+Skills lists without proof	                      "I know Python" means nothing. A Python project means everything.
+
+
+Note: If you only have one or two solid projects right now, that is enough to start. One finished, documented, working project with a clear README is more compelling than ten unfinished ones. Build the portfolio incrementally as you complete more work.
+
+Where to Host Your Portfolio
+Platform	                        Best for	                                                  Cost
+GitHub Pages	            Static HTML/CSS portfolio, free hosting from a GitHub repo	          Free
+Vercel	                    React or Next.js portfolio, auto-deploys from GitHub	          Free tier available
+Render	                    Python/FastAPI backend + static front end together	              Free tier available
+Notion	                    Quick portfolio page without code, shareable link	              Free
+Custom domain	            Professional presence (e.g., brianotieno.dev)	                  ~$10-15/year
+
+Tip: For a GitHub Pages portfolio, create a repo named username.github.io. Push an index.html file to the main branch. GitHub automatically serves it at https://username.github.io. No server, no cost, live in under five minutes.
+
