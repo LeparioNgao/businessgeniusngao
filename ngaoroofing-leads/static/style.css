@@ -1009,6 +1009,11 @@ textarea:focus {
     width: 100%;
 }
 
+.compact-actions {
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+}
+
 .status-update-row {
     display: flex;
     flex-wrap: wrap;
