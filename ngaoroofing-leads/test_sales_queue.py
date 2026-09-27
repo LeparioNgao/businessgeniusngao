@@ -407,6 +407,20 @@ class SalesQueueTests(unittest.TestCase):
         self.assertEqual(len(get_follow_ups_for_lead(lead_id, self.database_path)), len(before_follow_ups))
         self.assertIn(b"TEST DATA - Status target", self.client.get("/leads?status=QUOTED").data)
 
+        quick_action_response = self.client.post(
+            f"/leads/{lead_id}/next-action",
+            data={
+                "next_action": "Issue revised quote by Friday",
+                "next_follow_up_date": (self.today + timedelta(days=6)).isoformat(),
+            },
+        )
+        self.assertEqual(quick_action_response.status_code, 302)
+        profile_after_action = get_lead_profile(lead_id, self.today.isoformat(), self.database_path)
+        self.assertEqual(profile_after_action["next_action"], "Issue revised quote by Friday")
+        self.assertEqual(profile_after_action["next_follow_up_date"], (self.today + timedelta(days=6)).isoformat())
+        self.assertEqual(len(get_follow_ups_for_lead(lead_id, self.database_path)), len(before_follow_ups))
+        self.assertIn(b"Issue revised quote by Friday", self.client.get(f"/leads/{lead_id}").data)
+
         self.client.post(f"/leads/{lead_id}/status", data={"status": "WON"})
         self.assertNotIn(
             "TEST DATA - Status target",

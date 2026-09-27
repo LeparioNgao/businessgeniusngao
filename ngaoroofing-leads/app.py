@@ -20,6 +20,7 @@ from database import (
     get_sales_action_queue,
     initialize_database,
     SALES_QUEUE_CATEGORIES,
+    update_lead,
     update_lead_status as update_lead_status_in_db,
 )
 
@@ -190,6 +191,8 @@ def _render_lead_profile(
     follow_up_logged=False,
     status_message=None,
     status_error=False,
+    action_message=None,
+    action_error=False,
     status_code=200,
 ):
     lead = get_lead_profile(
@@ -226,6 +229,8 @@ def _render_lead_profile(
         follow_up_logged=follow_up_logged,
         status_message=status_message,
         status_error=status_error,
+        action_message=action_message,
+        action_error=action_error,
     )
     if status_code == 200:
         return response
@@ -370,6 +375,8 @@ def view_lead(lead_id):
         follow_up_logged=request.args.get("follow_up_logged") == "1",
         status_message=request.args.get("status_message") or None,
         status_error=request.args.get("status_error") == "1",
+        action_message=request.args.get("action_message") or None,
+        action_error=request.args.get("action_error") == "1",
     )
 
 
@@ -405,6 +412,49 @@ def update_lead_status(lead_id):
 
     return redirect(
         url_for("view_lead", lead_id=lead_id, status_message="Status updated."),
+    )
+
+
+@app.post("/leads/<int:lead_id>/next-action")
+def update_next_action(lead_id):
+    lead = get_lead_profile(
+        lead_id,
+        today=date.today().isoformat(),
+        database_path=app.config["DATABASE_PATH"],
+    )
+    if lead is None:
+        abort(404)
+
+    next_action = (request.form.get("next_action", "") or "").strip()
+    next_follow_up_date = (request.form.get("next_follow_up_date", "") or "").strip()
+
+    if next_follow_up_date and not _is_valid_iso_date(next_follow_up_date):
+        return redirect(
+            url_for("view_lead", lead_id=lead_id, action_error="1"),
+        )
+
+    updates = {"next_action": next_action or None}
+    if next_follow_up_date:
+        updates["next_follow_up_date"] = next_follow_up_date
+    elif "next_follow_up_date" in request.form:
+        updates["next_follow_up_date"] = None
+
+    try:
+        updated = update_lead(
+            lead_id,
+            updates,
+            database_path=app.config["DATABASE_PATH"],
+        )
+    except ValueError:
+        return redirect(
+            url_for("view_lead", lead_id=lead_id, action_error="1"),
+        )
+
+    if not updated:
+        abort(404)
+
+    return redirect(
+        url_for("view_lead", lead_id=lead_id, action_message="Next action updated."),
     )
 
 
