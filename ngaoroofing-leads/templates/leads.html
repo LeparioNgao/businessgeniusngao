@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>All Leads | Ngao Roofing</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="page-shell leads-shell">
+        <header class="page-header">
+            <div class="page-topline">
+                <a class="wordmark" href="{{ url_for('home') }}">NGAO ROOFING <span>SALES</span></a>
+                <nav class="main-nav" aria-label="Main navigation">
+                    <a href="{{ url_for('home') }}">Sales Queue</a>
+                    <a href="{{ url_for('lead_list') }}" aria-current="page">All Leads</a>
+                    <a class="main-nav-add" href="{{ url_for('add_lead') }}">Add Lead</a>
+                </nav>
+            </div>
+            <p class="eyebrow">SALES WORKLIST</p>
+            <h1>All Leads</h1>
+            <p class="intro">Active leads are shown first. Follow-up dates determine the attention order.</p>
+        </header>
+
+        <form class="lead-filters" method="get" action="{{ url_for('lead_list') }}">
+            <div class="filter-grid">
+                <div class="filter-field search-field">
+                    <label for="lead-search">Search leads</label>
+                    <input id="lead-search" name="q" type="search"
+                           placeholder="Name, phone, company, location"
+                           value="{{ search }}">
+                </div>
+                <div class="filter-field">
+                    <label for="status-filter">Status</label>
+                    <select id="status-filter" name="status">
+                        <option value="">All statuses</option>
+                        {% for option in status_options %}
+                            <option value="{{ option }}" {% if status_filter == option %}selected{% endif %}>{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="filter-field">
+                    <label for="source-filter">Source</label>
+                    <select id="source-filter" name="source">
+                        <option value="">All sources</option>
+                        {% for option in source_options %}
+                            <option value="{{ option }}" {% if source_filter == option %}selected{% endif %}>{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="filter-field">
+                    <label for="follow-up-filter">Follow-up</label>
+                    <select id="follow-up-filter" name="follow_up">
+                        <option value="">All follow-ups</option>
+                        {% for option in follow_up_options %}
+                            <option value="{{ option }}" {% if follow_up_filter == option %}selected{% endif %}>{{ option|title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="filter-field">
+                    <label for="lead-scope">Lead set</label>
+                    <select id="lead-scope" name="scope">
+                        <option value="active" {% if scope == 'active' %}selected{% endif %}>Active leads</option>
+                        <option value="all" {% if scope == 'all' %}selected{% endif %}>Include closed and archived</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-actions">
+                <div class="filter-buttons">
+                    <button class="button button-primary" type="submit">Apply filters</button>
+                    {% if has_filters or scope == 'all' %}
+                        <a class="clear-link" href="{{ url_for('lead_list') }}">Clear filters</a>
+                    {% endif %}
+                </div>
+                <p class="result-count">{{ leads|length }} of {{ total_leads }} leads shown</p>
+            </div>
+        </form>
+
+        {% if not leads %}
+            <section class="list-empty" aria-live="polite">
+                {% if has_filters %}
+                    <h2>No leads match your search.</h2>
+                    <p>Try changing the search text or filters.</p>
+                    <a class="button button-secondary" href="{{ url_for('lead_list') }}">Clear filters</a>
+                {% elif total_leads == 0 %}
+                    <h2>No leads have been captured yet.</h2>
+                    <p>Add the first enquiry to start the sales worklist.</p>
+                    <a class="button button-primary" href="{{ url_for('add_lead') }}">Add Lead</a>
+                {% elif scope == 'active' %}
+                    <h2>No active leads to show.</h2>
+                    <p>Won, lost, dormant, and archived leads are outside the active view.</p>
+                    <div class="empty-actions">
+                        <a class="button button-secondary" href="{{ url_for('lead_list', scope='all') }}">View all leads</a>
+                        <a class="button button-primary" href="{{ url_for('add_lead') }}">Add Lead</a>
+                    </div>
+                {% else %}
+                    <h2>No leads match your search.</h2>
+                    <p>Try changing the search text or filters.</p>
+                    <a class="button button-secondary" href="{{ url_for('lead_list') }}">Clear filters</a>
+                {% endif %}
+            </section>
+        {% else %}
+            <div class="leads-table-wrap">
+                <table class="leads-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Lead</th>
+                            <th scope="col">Company</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Source</th>
+                            <th scope="col">Project</th>
+                            <th scope="col">Product / profile</th>
+                            <th scope="col">Roof area</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Inquiry date</th>
+                            <th scope="col">Next action</th>
+                            <th scope="col">Next follow-up</th>
+                            <th scope="col">Last contact</th>
+                            <th scope="col">Follow-up state</th>
+                            <th scope="col">View lead</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for lead in leads %}
+                            <tr>
+                                <td class="lead-name-cell">
+                                    <a href="{{ url_for('view_lead', lead_id=lead.id) }}">{{ lead.name }}</a>
+                                    {% if lead.archived_at %}<span class="archive-tag">ARCHIVED</span>{% endif %}
+                                </td>
+                                <td>{{ lead.company or 'Not provided' }}</td>
+                                <td>{{ lead.location or 'Not provided' }}</td>
+                                <td>{{ lead.source or 'Not provided' }}</td>
+                                <td>{{ lead.project_type or 'Not provided' }}</td>
+                                <td>{{ lead.product_profile or 'Not provided' }}</td>
+                                <td>{{ lead.estimated_roof_area if lead.estimated_roof_area is not none else 'Not provided' }}</td>
+                                <td><span class="status-badge status-{{ lead.status|lower|replace(' ', '-') }}">{{ lead.status }}</span></td>
+                                <td>{{ lead.inquiry_date }}</td>
+                                <td class="action-cell">{{ lead.next_action or 'No next action' }}</td>
+                                <td>{{ lead.next_follow_up_date or 'Not set' }}</td>
+                                <td>{{ lead.last_contact_date or 'None logged' }}</td>
+                                <td><span class="follow-up-badge follow-up-{{ lead.follow_up_status|lower|replace(' ', '-') }}">{{ lead.follow_up_status }}</span></td>
+                                <td><a class="view-link" href="{{ url_for('view_lead', lead_id=lead.id) }}">View</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <section class="lead-card-list" aria-label="Lead results">
+                {% for lead in leads %}
+                    <article class="lead-card">
+                        <div class="lead-card-heading">
+                            <div>
+                                <h2><a href="{{ url_for('view_lead', lead_id=lead.id) }}">{{ lead.name }}</a></h2>
+                                {% if lead.company %}<p>{{ lead.company }}</p>{% endif %}
+                            </div>
+                            <span class="status-badge status-{{ lead.status|lower|replace(' ', '-') }}">{{ lead.status }}</span>
+                        </div>
+                        {% if lead.archived_at %}<p><span class="archive-tag">ARCHIVED</span></p>{% endif %}
+                        <p><span class="follow-up-badge follow-up-{{ lead.follow_up_status|lower|replace(' ', '-') }}">{{ lead.follow_up_status }}</span></p>
+                        <dl class="lead-card-details">
+                            <div><dt>Location</dt><dd>{{ lead.location or 'Not provided' }}</dd></div>
+                            <div><dt>Source / project</dt><dd>{{ lead.source or 'Not provided' }} / {{ lead.project_type or 'Not provided' }}</dd></div>
+                            <div><dt>Product / profile</dt><dd>{{ lead.product_profile or 'Not provided' }}</dd></div>
+                            <div><dt>Roof area</dt><dd>{{ lead.estimated_roof_area if lead.estimated_roof_area is not none else 'Not provided' }}</dd></div>
+                            <div><dt>Inquiry date</dt><dd>{{ lead.inquiry_date }}</dd></div>
+                            <div><dt>Next action</dt><dd>{{ lead.next_action or 'No next action' }}</dd></div>
+                            <div><dt>Next follow-up</dt><dd>{{ lead.next_follow_up_date or 'Not set' }}</dd></div>
+                            <div><dt>Last contact</dt><dd>{{ lead.last_contact_date or 'None logged' }}</dd></div>
+                        </dl>
+                        <a class="view-link" href="{{ url_for('view_lead', lead_id=lead.id) }}">View lead</a>
+                    </article>
+                {% endfor %}
+            </section>
+        {% endif %}
+    </main>
+</body>
+</html>

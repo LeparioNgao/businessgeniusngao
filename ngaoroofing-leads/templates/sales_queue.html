@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sales Queue | Ngao Roofing</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="page-shell queue-shell">
+        <header class="page-header queue-header">
+            <div class="page-topline">
+                <a class="wordmark" href="{{ url_for('home') }}">NGAO ROOFING <span>SALES</span></a>
+                <nav class="main-nav" aria-label="Main navigation">
+                    <a href="{{ url_for('home') }}" aria-current="page">Sales Queue</a>
+                    <a href="{{ url_for('lead_list') }}">All Leads</a>
+                    <a class="button button-primary main-nav-add" href="{{ url_for('add_lead') }}">Add Lead</a>
+                </nav>
+            </div>
+            <p class="eyebrow">DAILY SALES ACTIONS</p>
+            <h1>Sales Queue</h1>
+            <p class="intro">Start with the most time-sensitive customer conversations.</p>
+        </header>
+
+        <div class="queue-sections">
+            {% for category in category_order %}
+                {% set leads = queue[category] %}
+                <section id="queue-{{ category|lower|replace(' ', '-') }}"
+                         class="queue-section queue-section-{{ category|lower|replace(' ', '-') }}"
+                         aria-labelledby="heading-{{ category|lower|replace(' ', '-') }}">
+                    <header class="queue-section-header">
+                        <h2 id="heading-{{ category|lower|replace(' ', '-') }}">
+                            {{ category }} <span class="queue-count">({{ leads|length }})</span>
+                        </h2>
+                    </header>
+
+                    {% if leads %}
+                        <div class="queue-leads">
+                            {% for lead in leads %}
+                                <article class="queue-lead">
+                                    <div class="queue-lead-identity">
+                                        <h3>{{ lead.name }}</h3>
+                                        {% if lead.company or lead.location %}
+                                            <p>
+                                                {% if lead.company %}{{ lead.company }}{% endif %}
+                                                {% if lead.company and lead.location %}<span aria-hidden="true"> / </span>{% endif %}
+                                                {% if lead.location %}{{ lead.location }}{% endif %}
+                                            </p>
+                                        {% endif %}
+                                        <span class="status-badge status-{{ lead.status|lower|replace(' ', '-') }}">{{ lead.status }}</span>
+                                    </div>
+
+                                    <dl class="queue-lead-details">
+                                        <div>
+                                            <dt>Last contact</dt>
+                                            <dd>{{ lead.last_contact_date|display_date }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Next action</dt>
+                                            <dd>{{ lead.next_action or 'No next action recorded.' }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Next follow-up</dt>
+                                            <dd>{{ lead.next_follow_up_date|display_date }}</dd>
+                                        </div>
+                                        {% if lead.latest_customer_response %}
+                                            <div class="queue-response">
+                                                <dt>Latest customer response</dt>
+                                                <dd>{{ lead.latest_customer_response }}</dd>
+                                            </div>
+                                        {% endif %}
+                                    </dl>
+
+                                    <a class="button button-primary queue-open-link"
+                                       href="{{ url_for('view_lead', lead_id=lead.id) }}">OPEN LEAD</a>
+                                </article>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="queue-empty-state">{{ empty_messages[category] }}</p>
+                    {% endif %}
+                </section>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>
