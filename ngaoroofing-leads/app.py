@@ -515,4 +515,6 @@ def log_follow_up(lead_id):
 
 if __name__ == "__main__":
     initialize_database(app.config["DATABASE_PATH"])
-    app.run(debug=True, use_reloader=False)
+    host = os.environ.get("NGAO_ROOFING_HOST", "127.0.0.1")
+    port = int(os.environ.get("NGAO_ROOFING_PORT", "5000"))
+    app.run(host=host, port=port, debug=True, use_reloader=False)
