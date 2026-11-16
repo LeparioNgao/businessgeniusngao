@@ -1,0 +1,120 @@
+This week you learn how software talks to software: sending API requests, reading JSON, protecting your API keys and calling APIs from Python and JavaScript. From Week 3 the API you call is an AI model, and every tool you build stands on what you learn here.
+
+What APIs Are and Why They Matter
+
+Phase I taught you to write Python. Phase II teaches you to connect it to the world. APIs are how your code talks to other services, other databases, and other systems. Every serious program you will ever build uses at least one API. Today you learn what they are and make your first API request.
+
+By the end of today you will have
+1. Understood what an API is and how it works
+2. Made your first API call using Python and the requests library
+3. Read and understood a JSON API response
+4. Identified the key parts of API documentation
+
+What Is an API?
+An API (Application Programming Interface) is a way for one program to talk to another. When you write code that needs data or a service that lives somewhere else, you use an API to ask for it.
+
+API stands for Application Programming Interface. Think of it as a menu at a restaurant. The kitchen has food. You do not walk into the kitchen yourself. You use the menu to tell the waiter what you want, the waiter tells the kitchen, and the kitchen sends back your order. Your code is the customer. The API is the menu and the waiter. The service you are calling is the kitchen.
+
+You use APIs every day without knowing it. When you check the weather on your phone, the app calls a weather API. When Safaricom confirms a payment, the POS system called an API. When you search on Google Maps, the app called a maps API.
+
+When a business wants to accept M-Pesa payments, they do not call Safaricom and ask for help one customer at a time. They integrate the Daraja API. Their system sends a request with the customer's phone number and amount. Safaricom's system processes it and sends back a response: confirmed or failed. One integration. Thousands of transactions. That is what APIs do.
+
+As a developer, APIs are how you give your programs superpowers. You do not have to build a weather system, a payment system, or an AI model from scratch. You call the API of someone who already built it.
+
+How an API Call Works.
+
+Step 1: You send a Request
+Your code sends an HTTP request to a URL. The URL is the address of the API. Like visiting a website, but instead of a browser making the request, your Python code does it.
+
+Step 2: The API processes it
+The server receives your request, checks if you are allowed to make it, runs whatever logic it needs to, and prepares a response.
+
+Step 3: You receive a Response
+The API sends back data, usually in JSON format. JSON is a structured way to send data that both humans and computers can read. You parse it and use what you need.
+
+HTTP has different request types. The most common ones you will use are GET (fetch data) and POST (send data). Today we use GET.
+
+Installing the requests library
+
+Python can make HTTP requests using a library called requests. It is not in the standard library, so you install it once with pip.
+
+Open your terminal in VS Code and run:
+
+pip install requests
+
+Once it installs, you never have to install it again for that Python environment.
+
+Your First API Call
+
+We will use the REST Countries API. It is free, needs no sign-up, and returns live data about every country in the world. Good for learning because there are no keys to manage yet.
+
+Open VS Code. Create a new file called day1_api.py. Type this exactly:
+
+import requests
+
+url = "https://api.worldbank.org/v2/country/KEN?format=json"
+
+response = requests.get(url)
+
+print("Status code:", response.status_code)
+print("Data received:", response.json())
+
+Run it with python day1_api.py. You will see a status code of 200 (that means OK) and a large block of data about Kenya.
+
+Status codes matter. 200 means success. 404 means not found. 401 means not authorized. 429 means you sent too many requests. 500 means something broke on the server side. Always check the status code before you trust the data.
+
+Reading the JSON response:
+
+The raw output is hard to read. Let's pull out only what we need. Update your file:
+
+import requests
+
+url = "https://api.worldbank.org/v2/country/KEN?format=json"
+
+response = requests.get(url)
+
+if response.status_code == 200:
+    data = response.json()
+    country = data[0]
+
+    name = country["name"]["common"]
+    capital = country["capital"][0]
+    population = country["population"]
+    currency = list(country["currencies"].keys())[0]
+
+    print(f"Country: {name}")
+    print(f"Capital: {capital}")
+    print(f"Population: {population:,}")
+    print(f"Currency: {currency}")
+else:
+    print("Request failed. Status:", response.status_code)
+
+JSON is a structured container.
+Think of it like a folder system. 
+country["name"]["common"] means: open the country folder, open the name folder inside it, and pick up the file called common. 
+Every API response has its own folder structure. Your job is to find what you need inside it.
+
+Reading API documentation
+
+Every API has documentation that tells you what requests it accepts and what it sends back.
+Good documentation is one of the most important things to look for when choosing an API to work with.
+
+For REST Countries, the documentation is at restcountries.com.
+For any API you use, look for these things in the docs:
+
+Base URL: the root address all requests start from
+Endpoints: the specific paths you add to the base URL to get different data
+Parameters: options you can add to control what comes back
+Authentication: whether you need a key or account to use it
+Rate limits: how many requests you are allowed per minute or per day
+Response format: the structure of what comes back so you know how to parse it
+
+APIs You Already Use Without Knowing It
+
+Before you write your exercise code, take a moment to list three APIs you interact with daily as a user:
+
+Think about: the weather app on your phone, any banking or mobile money service, ride-hailing (Bolt, Uber), any app that shows you a map, any service that sends you an SMS confirmation. Every one of those is an API call happening in the background every time you tap the screen.
+
+Understanding this changes how you see software. You are not building isolated programs anymore. You are building things that connect to a live, running world.
+
+Outcome: You can make API requests with Python and read the response data. You understand what an API is, how the request-response cycle works, and how to pull specific values out of a JSON response.
