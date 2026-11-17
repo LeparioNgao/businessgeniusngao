@@ -2,7 +2,10 @@ This week you learn how software talks to software: sending API requests, readin
 
 What APIs Are and Why They Matter
 
-Phase I taught you to write Python. Phase II teaches you to connect it to the world. APIs are how your code talks to other services, other databases, and other systems. Every serious program you will ever build uses at least one API. Today you learn what they are and make your first API request.
+Phase I taught you to write Python. Phase II teaches you to connect it to the world.
+APIs are how your code talks to other services, other databases, and other systems.
+Every serious program you will ever build uses at least one API.
+Today you learn what they are and make your first API request.
 
 By the end of today you will have
 1. Understood what an API is and how it works
