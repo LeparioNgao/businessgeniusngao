@@ -1,0 +1,143 @@
+Yesterday you called a public API with no restrictions. Most APIs are not public. They require a key to prove who you are. Today you learn how to use keys safely, keep them out of your code, and write scripts that handle errors correctly.
+
+By the end of today you will have
+1. Generated an API key and stored it in a .env file
+2. Loaded the key into your script using python-dotenv
+3. Handled HTTP errors: 401, 429, and 500
+4. Set up a .gitignore that excludes your .env file
+
+Why APIs Need Keys
+A free public API like REST Countries lets anyone call it. But most useful APIs cost money to run. Weather data, payment processing, AI models, maps, SMS: these all have running costs. The API provider needs to know who is using them, how much they are using, and whether they have paid.
+
+An API key is a unique string the provider gives you when you sign up. You attach it to every request you make. The server checks the key, confirms your account is active, tracks your usage, and decides whether to respond.
+
+Think of an API key like your M-Pesa PIN.
+You have an account. You have a PIN that proves it is you making the transaction. You never write your PIN on a piece of paper and hand it to a stranger. You never share it in a public place. An API key works the same way. It proves it is your account making the requests. If someone else gets it, they can use your account, hit your limits, and run up your bill.
+
+Never put an API key directly in your code. Never. Not even once, not even "just for testing." If that code ever touches GitHub, the key is exposed. Bots scan GitHub repositories constantly looking for exposed keys. Keys found this way are used within minutes.
+
+Setting Up a Free API Key
+We will use OpenWeatherMap. It has a free tier that gives you 1,000 calls per day, which is enough for all the exercises in this course.
+
+Step 1: Create your account
+Go to openweathermap.org and sign up for a free account. No payment details needed for the free tier.
+
+Step 2: Get your key
+After signing up, go to your account page and find the API Keys section. Copy your default key. It looks like a long string of letters and numbers: a1b2c3d4e5f6...
+
+Step 3: Wait for activation
+New keys can take up to 2 hours to activate. If you get a 401 error today, wait and try again. This is normal.
+
+Storing Your Key Safely with .env
+A .env file (pronounced "dot env") is a plain text file that stores environment variables. It lives in your project folder but never gets pushed to GitHub.
+
+Create a file called .env in your project folder. Add this line:OPENWEATHER_API_KEY=your_actual_key_here
+
+Replace your_actual_key_here with your actual key. No quotes. No spaces around the equals sign.
+
+Now create a file called .gitignore in the same folder. Add this:
+
+.env
+That one line tells git to never track the .env file. Check that it worked by running git status. The .env file should not appear in the list of files to commit.
+
+Check your .gitignore before every first commit. Once a file with a key is pushed to GitHub, deleting it later is not enough. The key was in the git history. You must revoke the key and generate a new one. Do it right the first time.
+
+Loading the Key in Your Script
+Install the library that reads .env files:
+
+pip install python-dotenv
+Create a new file called day2_weather.py:
+
+import requests
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+api_key = os.getenv("OPENWEATHER_API_KEY")
+city = "Nairobi"
+
+url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
+
+response = requests.get(url)
+
+if response.status_code == 200:
+    data = response.json()
+    temp = data["main"]["temp"]
+    description = data["weather"][0]["description"]
+    humidity = data["main"]["humidity"]
+
+    print(f"Weather in {city}")
+    print(f"Temperature: {temp}C")
+    print(f"Condition: {description}")
+    print(f"Humidity: {humidity}%")
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+Run it. If your key is active, you will see the current weather in Nairobi. Change the city variable to test other cities.
+
+Handling Errors Correctly
+A good script does not crash when something goes wrong. It catches the problem, tells you what happened, and keeps running where possible.
+
+Here are the HTTP errors you will see most often:
+
+Code	   Meaning	                 What to do
+200	      OK, success	          Process the data
+400	      Bad request	          Check your parameters
+401	      Unauthorized	          Check your API key
+404	      Not found	              Check the endpoint URL or the search term
+429	      Too many requests	      Slow down. Wait before retrying.
+500	      Server error	          Not your fault. Try again later.
+
+Update your script with proper error handling:
+
+import requests
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+api_key = os.getenv("OPENWEATHER_API_KEY")
+city = "Nairobi"
+
+url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
+
+response = requests.get(url)
+
+if response.status_code == 200:
+    data = response.json()
+    temp = data["main"]["temp"]
+    description = data["weather"][0]["description"]
+    humidity = data["main"]["humidity"]
+    print(f"Weather in {city}: {temp}C, {description}, humidity {humidity}%")
+
+elif response.status_code == 401:
+    print("API key is invalid or not yet active. Check your .env file.")
+
+elif response.status_code == 404:
+    print(f"City not found: {city}. Check the spelling.")
+
+elif response.status_code == 429:
+    print("Too many requests. Wait before trying again.")
+
+else:
+    print(f"Unexpected error: {response.status_code}")
+    print(response.text)
+    
+Test your error handling deliberately. Change the city to something that does not exist, like "XYZXYZ". You should see the 404 message, not a crash.
+
+Test with a Bad Key
+To verify your 401 handler works, temporarily change your .env key to something wrong, run the script, then change it back. You should see the "invalid or not yet active" message, not an unhandled exception.
+
+Testing your error paths is not optional. If you only test the happy path, you only know half your script works. Always deliberately trigger each error at least once.
+
+Today's Exercise
+Build a script that calls an authenticated API, loads the key from a .env file, and handles at least two error types gracefully.
+
+You can continue with OpenWeatherMap or pick another API that requires a key. Some options:
+
+OpenWeatherMap: already set up today
+NewsAPI (newsapi.org): free tier, returns current news headlines
+ExchangeRate-API (exchangerate-api.com): free tier, currency conversion
+Requirements: key stored in .env, .env in .gitignore, at least two error codes handled explicitly, clean readable output. Push to GitHub.
+
+Outcome: You can authenticate API requests securely. Your keys stay out of your code and out of GitHub. Your scripts handle errors rather than crashing.
