@@ -4,7 +4,8 @@ Fetch current price and market statistics for a cryptocurrency using CoinGecko.
 
 Setup:
     Install dependencies with: python3 -m pip install -r requirements.txt
-    Add COINGECKO_API_KEY=<your demo key> to a .env file in this folder or its parent.
+    Add COINGECKO_API_KEY and EXCHANGERATE_API_KEY to a .env file in this folder
+    or its parent. The exchange-rate key is only needed for non-USD currencies.
 
 Run:
     python3 crypto_market_tool.py
@@ -34,20 +35,46 @@ def api_get(endpoint, params, api_key):
     return response.json()
 
 
+def fetch_exchange_rate(currency, api_key):
+    # Convert USD prices into currencies CoinGecko may not quote.
+    url = f"https://v6.exchangerate-api.com/v6/{api_key}/pair/USD/{currency.upper()}/1"
+    response = requests.get(url, timeout=15)
+    response.raise_for_status()
+    data = response.json()
+
+    if data.get("result") != "success":
+        error = data.get("error-type", "unknown error")
+        raise ValueError(f"Could not convert USD to {currency.upper()}: {error}.")
+
+    rate = data.get("conversion_rate")
+    if not isinstance(rate, (int, float)):
+        raise ValueError("The exchange-rate service returned an invalid rate.")
+    return rate
+
+
+def convert_usd(amount, rate):
+    if amount is None:
+        return None
+    converted_amount = amount * rate
+    precision = 2 if abs(converted_amount) >= 1 else 8
+    return round(converted_amount, precision)
+
+
 def fetch_market_snapshot(coin_id, currency, api_key):
+    # Use USD as a common source because CoinGecko does not support every local currency.
     price_data = api_get(
         "simple/price",
-        {"ids": coin_id, "vs_currencies": currency},
+        {"ids": coin_id, "vs_currencies": "usd"},
         api_key,
     )
-    price = price_data.get(coin_id, {}).get(currency)
-    if price is None:
+    price_usd = price_data.get(coin_id, {}).get("usd")
+    if price_usd is None:
         raise ValueError(f"No price data found for '{coin_id}'. Check the CoinGecko ID.")
 
     market_data = api_get(
         "coins/markets",
         {
-            "vs_currency": currency,
+            "vs_currency": "usd",
             "ids": coin_id,
             "price_change_percentage": "24h",
         },
@@ -57,14 +84,27 @@ def fetch_market_snapshot(coin_id, currency, api_key):
         raise ValueError(f"No market data found for '{coin_id}'. Check the CoinGecko ID.")
 
     market = market_data[0]
+    exchange_api_key = os.getenv("EXCHANGERATE_API_KEY")
+    if currency != "usd" and not exchange_api_key:
+        raise ValueError("Currency conversion needs EXCHANGERATE_API_KEY in your .env file.")
+    exchange_rate = 1.0 if currency == "usd" else fetch_exchange_rate(currency, exchange_api_key)
+    market_cap_usd = market.get("market_cap")
+    volume_usd = market.get("total_volume")
+
+    # Keep both the source values and converted values in the saved snapshot.
     return {
         "coin_id": coin_id,
         "name": market.get("name", coin_id.title()),
         "symbol": market.get("symbol", "").upper(),
+        "source_currency": "USD",
         "currency": currency.upper(),
-        "current_price": price,
-        "market_cap": market.get("market_cap"),
-        "total_volume_24h": market.get("total_volume"),
+        "usd_to_display_rate": exchange_rate,
+        "current_price_usd": price_usd,
+        "current_price": convert_usd(price_usd, exchange_rate),
+        "market_cap_usd": market_cap_usd,
+        "market_cap": convert_usd(market_cap_usd, exchange_rate),
+        "total_volume_24h_usd": volume_usd,
+        "total_volume_24h": convert_usd(volume_usd, exchange_rate),
         "price_change_percentage_24h": market.get("price_change_percentage_24h"),
         "fetched_at_utc": datetime.now(timezone.utc).isoformat(),
     }
@@ -83,6 +123,8 @@ def display_snapshot(snapshot):
     print(f"Current price       {format_money(snapshot['current_price'], currency)}")
     print(f"Market capitalization {format_money(snapshot['market_cap'], currency)}")
     print(f"24-hour trading volume {format_money(snapshot['total_volume_24h'], currency)}")
+    if currency != "USD":
+        print(f"Exchange rate       1 USD = {snapshot['usd_to_display_rate']:,.4f} {currency}")
 
     change = snapshot["price_change_percentage_24h"]
     if change is None:
@@ -100,7 +142,7 @@ def save_snapshot(snapshot):
 
 def main():
     load_dotenv()
-    api_key = os.getenv("COINGECKO_API_KEY") or os.getenv("COINGECK_API_KEY")
+    api_key = os.getenv("COINGECKO_API_KEY")
     if not api_key:
         print("CoinGecko API key not found. Add COINGECKO_API_KEY to your .env file.")
         return 1
