@@ -1,0 +1,115 @@
+This week you learned what APIs are, how to authenticate, how to build command-line tools, and how to fetch data in the browser. Today you build one complete application and push it to GitHub. This is your first portfolio piece for Phase II.
+
+By the end of today you will have
+1. Built a complete, working API-powered application
+2. Solved a business problem with live data
+3. Written a clear README and pushed everything to GitHub
+4. Added it to your portfolio
+
+What Makes a Project Portfolio-Ready
+A portfolio project is not just code that runs. It is code that communicates. Someone looking at your GitHub should be able to understand what you built, why it exists, and how to run it, without asking you a single question.
+
+Portfolio-ready means three things:
+
+The code works and is clean (no commented-out junk, no unused variables)
+The README explains the problem, the solution, and how to run it
+The project does something specific, not something vague
+A Jua Kali craftsman does not display unfinished work at an exhibition stand.
+They show their best, cleanest, most complete pieces. Those pieces are what gets them hired. Your GitHub portfolio is your exhibition stand. Every project on it either builds your reputation or hurts it. Today's project should build it.
+
+Choose Your Project
+Pick one of these options, or propose your own. The only requirement is that it uses at least one live API and solves a problem someone actually has.
+
+OPTION A
+Kenyan Business Currency Tracker
+A Python command-line tool that takes a price in KES and converts it to USD, EUR, and GBP using a live exchange rate API. Useful for businesses quoting clients abroad. Use ExchangeRate-API (free tier) or Open Exchange Rates.
+
+OPTION B
+City Weather Dashboard (Web Page)
+A single HTML file that lets a user enter any city and see the current weather, a 3-day forecast, and the country's basic info. Uses OpenWeatherMap (weather) and REST Countries (country info). No backend needed since you use a public weather API with a key in the URL.
+
+Note: For this option, you can put the OpenWeatherMap key directly in the HTML since this is a learning project. In production you would use a backend. We cover this on Day 16.
+
+OPTION C
+News Brief Generator
+A Python script that fetches today's top headlines in a category the user picks (technology, business, health) and prints them as a clean brief. Uses NewsAPI (free tier). Good for demonstrating both API use and readable output formatting.
+
+OPTION D
+Your Own Idea
+If you have a specific problem you want to solve with a public API, build that. Bring it to the group. The best projects are the ones that solve a problem you know well.
+
+Build Plan
+Before you write a single line of code, write down:
+
+The problem: one sentence. What does this solve?
+The input: what does the user provide?
+The processing: which API? What data do you need from it?
+The output: what does the user see at the end?
+This takes 5 minutes but saves you from building the wrong thing. Write it in a comment at the top of your file before you start coding.
+
+Writing a Good README
+Your README is the first thing anyone sees when they visit your repository. It should answer three questions immediately:
+
+What is this? One or two sentences. What does it do, in plain language.
+
+How do I run it? Exact commands. Do not assume they know anything. List the pip install command, the .env setup, and the run command.
+
+What does it look like? Include one example of the output. Copy and paste an actual terminal output or screenshot. This proves it works.
+
+Here is a simple README structure:
+
+## City Weather Tool
+
+Shows current weather for any city using the OpenWeatherMap API.
+
+## Setup
+
+1. Clone the repo
+2. Run: pip install requests python-dotenv
+3. Create a .env file with: OPENWEATHER_API_KEY=your_key_here
+4. Get a free key at openweathermap.org
+
+## Usage
+
+python weather.py
+
+## Example Output
+
+Enter a city: Nairobi
+Weather in Nairobi: 22C, partly cloudy, humidity 65%
+Testing Before You Push
+Before pushing to GitHub, run through this checklist manually:
+
+Pre-push checklist
+The script runs from a fresh terminal with no errors
+I tested at least 3 different inputs
+I tested one bad input (a city that does not exist, a bad API key)
+My .env file is in .gitignore and NOT in git status
+There are no hardcoded API keys in any file
+My README has setup instructions and a sample output from an actual run
+My code has no commented-out blocks or debug print statements I forgot to remove
+Push to GitHub
+From your project folder:
+
+git init
+git add .
+git commit -m "Add Week 1 project: [your project name]"
+git branch -M main
+git remote add origin https://github.com/yourusername/your-repo-name.git
+git push -u origin main
+If you already have a repo from Phase I, create a new folder inside it for Phase II work, or create a separate repo. Keep your Phase II projects together so a client can see the progression.
+
+Week 1 Complete
+You understand what APIs are and how the request-response cycle works
+You can make authenticated API calls and keep your keys secure
+You can build command-line tools that chain multiple APIs
+You can fetch and display live data in the browser using JavaScript
+You have one complete, documented, portfolio-ready project on GitHub
+Next week: working with clients. Reading briefs, writing proposals, delivering work professionally, and getting paid on your terms.
+
+Post your project link in the Amerix WhatsApp channel for feedback from the community.
+
+Outcome: A finished, documented API application on GitHub. It works, the README is clear, and a non-technical person can understand what it does.
+
+Track A Day 5 Project: Python Tool for a Client
+Write a Python script that asks the user for a client name and a task, then prints a formatted action summary. Example: Kamau Auto Spares, Task: Follow up on invoice #014. Add a loop so the user can log multiple tasks before quitting. Save each entry to a text file called tasks.txt.
