@@ -1,0 +1,130 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, Arial, sans-serif;
+  background: #09111f;
+  color: #edf4ff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at top, #18345e 0, #09111f 55%);
+}
+
+.app {
+  width: min(680px, calc(100% - 32px));
+  margin: 32px auto;
+}
+
+header { margin-bottom: 20px; }
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: #75a7ff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 12px;
+}
+
+h1 { margin: 0; }
+
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid #263a5a;
+  border-radius: 12px;
+  background: rgba(14, 29, 51, 0.92);
+}
+
+label {
+  grid-row: 1;
+  color: #bed2ef;
+  font-size: 14px;
+}
+
+input,
+button {
+  min-height: 46px;
+  border-radius: 8px;
+  font: inherit;
+}
+
+input {
+  grid-row: 2;
+  width: 100%;
+  padding: 0 12px;
+  border: 1px solid #415778;
+  background: #09111f;
+  color: white;
+}
+
+button {
+  grid-column: 1 / -1;
+  border: 0;
+  background: #3976d4;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:hover { background: #4b88df; }
+button:disabled { opacity: 0.65; cursor: wait; }
+
+.result {
+  margin-top: 16px;
+  min-height: 70px;
+  padding: 20px;
+  border: 1px solid #263a5a;
+  border-radius: 12px;
+  background: rgba(14, 29, 51, 0.92);
+}
+
+.result.error {
+  border-color: #8f4051;
+  color: #ffbec8;
+}
+
+.snapshot {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.snapshot h2 {
+  grid-column: 1 / -1;
+  margin: 0 0 4px;
+}
+
+.metric {
+  padding: 14px;
+  border-radius: 8px;
+  background: #101e34;
+}
+
+.metric span {
+  display: block;
+  margin-bottom: 6px;
+  color: #9eb5d3;
+  font-size: 13px;
+}
+
+.metric strong { font-size: 18px; }
+
+.positive { color: #75dda2; }
+.negative { color: #ff9aa8; }
+
+@media (max-width: 520px) {
+  form { grid-template-columns: 1fr; }
+  label { grid-row: auto; }
+  input { grid-row: auto; }
+  button { grid-column: auto; }
+  .snapshot { grid-template-columns: 1fr; }
+  .snapshot h2 { grid-column: auto; }
+}

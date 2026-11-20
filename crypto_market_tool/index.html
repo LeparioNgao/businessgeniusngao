@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crypto Market Snapshot</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <header>
+      <p class="eyebrow">Live market data</p>
+      <h1>Crypto Market Snapshot</h1>
+    </header>
+
+    <form id="marketForm">
+      <label for="coinInput">Coin ID</label>
+      <input id="coinInput" type="text" value="bitcoin" placeholder="bitcoin" autocomplete="off">
+
+      <label for="currencyInput">Display currency</label>
+      <input id="currencyInput" type="text" value="usd" placeholder="usd" autocomplete="off">
+
+      <button type="submit">Get snapshot</button>
+    </form>
+
+    <div id="result" class="result" role="status">Enter a coin and click Get snapshot.</div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

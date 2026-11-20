@@ -35,6 +35,16 @@ python3 crypto_market_tool.py
 
 Enter a CoinGecko coin ID, such as `bitcoin`, `ethereum`, or `solana`, and a display currency such as `usd`, `eur`, or `kes`. CoinGecko market data is fetched in USD; ExchangeRate-API converts the price, market capitalization, and trading volume when needed. The JSON snapshot includes both the original USD values and converted values.
 
+### Run the webpage
+
+From this folder, start the local web server:
+
+```bash
+python3 web_server.py
+```
+
+Open `http://127.0.0.1:8000` in a browser. Enter a coin ID and display currency, then click **Get snapshot**. The page uses browser `fetch()` with `async/await`, a loading state, formatted results, and a clear error state. API keys remain on the Python server and are never included in browser JavaScript.
+
 ## Errors
 
 The tool reports missing keys, invalid input, network failures, rejected API requests, rate limits, and missing coin data in plain language.
