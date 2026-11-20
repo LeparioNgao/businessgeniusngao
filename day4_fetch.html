@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Country Info</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; }
+    h1 { color: #1F4E79; }
+    #result { background: #f7f9fc; border: 1px solid #d0dff0; border-radius: 8px; padding: 20px; margin-top: 20px; }
+    button { background: #2E75B6; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; }
+    button:hover { background: #1F4E79; }
+  </style>
+</head>
+<body>
+
+<h1>Country Info</h1>
+<input type="text" id="countryInput" placeholder="Enter a country name" style="padding:8px; font-size:16px; width:250px;">
+<button onclick="loadCountry()">Search</button>
+<div id="result">Enter a country name above and click Search.</div>
+
+<script>
+let countriesRequest;
+
+async function loadCountry() {
+  const country = document.getElementById("countryInput").value.trim();
+
+  if (!country) {
+    document.getElementById("result").innerHTML = "Please enter a country name.";
+    return;
+  }
+
+  document.getElementById("result").innerHTML = "Loading...";
+
+  try {
+    countriesRequest ??= fetch("https://raw.githubusercontent.com/mledoze/countries/master/countries.json")
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Country data request failed (${response.status})`);
+        }
+        return response.json();
+      });
+
+    const countries = await countriesRequest;
+    const query = country.toLowerCase();
+    const info = countries.find(item =>
+      item.name.common.toLowerCase() === query ||
+      item.name.official.toLowerCase() === query ||
+      item.altSpellings.some(name => name.toLowerCase() === query)
+    );
+
+    if (!info) {
+      throw new Error("Country not found");
+    }
+
+    const name = info.name.common;
+    const capital = info.capital ? info.capital[0] : "N/A";
+    const region = info.region;
+    const flag = info.flag;
+    let population = "Unavailable";
+
+    try {
+      const populationResponse = await fetch(
+        `https://countriesnow.space/api/v0.1/countries/population/q?country=${encodeURIComponent(name)}`
+      );
+      const populationData = await populationResponse.json();
+      const counts = populationData.data?.populationCounts ?? [];
+      const latestPopulation = counts.at(-1);
+
+      if (populationResponse.ok && latestPopulation) {
+        population = `${Number(latestPopulation.value).toLocaleString()} (${latestPopulation.year})`;
+      }
+    } catch {
+      // Country details remain useful if the population source is unavailable.
+    }
+
+    document.getElementById("result").innerHTML = `
+      <h2>${flag} ${name}</h2>
+      <p><strong>Capital:</strong> ${capital}</p>
+      <p><strong>Region:</strong> ${region}</p>
+      <p><strong>Population:</strong> ${population}</p>
+    `;
+  } catch (error) {
+    document.getElementById("result").innerHTML = `Error: ${error.message}`;
+  }
+}
+</script>
+
+</body>
+</html>
