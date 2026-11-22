@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5ee">
+  <title>Learn Samburu | Wordbook</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Learn Samburu home">
+      <span class="brand-mark" aria-hidden="true">LS</span>
+      <span>Learn <strong>Samburu</strong></span>
+    </a>
+    <span class="private-label"><span class="status-dot"></span> Private wordbook</span>
+  </header>
+
+  <main class="page-shell">
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Your language, in your own voice</p>
+        <h1 id="page-title">Start with the words<br>you already know.</h1>
+        <p class="intro-copy">Save a Samburu word, what it means, when to use it, and how it sounds.</p>
+      </div>
+      <div class="intro-note" aria-hidden="true">
+        <span class="sound-line sound-line-one"></span>
+        <span class="sound-line sound-line-two"></span>
+        <span class="sound-line sound-line-three"></span>
+        <span class="sound-line sound-line-four"></span>
+        <span class="sound-line sound-line-five"></span>
+        <span class="note-caption">listen · remember · share</span>
+      </div>
+    </section>
+
+    <div class="workspace">
+      <section class="entry-panel" aria-labelledby="form-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Wordbook entry</p>
+            <h2 id="form-title">Add a word or phrase</h2>
+          </div>
+          <span class="step-number">01</span>
+        </div>
+
+        <form id="entryForm">
+          <input id="entryId" type="hidden">
+          <div class="field-row">
+            <div class="field">
+              <label for="phrase">Samburu word or phrase <span class="required">*</span></label>
+              <input id="phrase" name="phrase" maxlength="500" required autocomplete="off" placeholder="Type it as you know it">
+            </div>
+            <div class="field">
+              <label for="meaning">Meaning <span class="required">*</span></label>
+              <input id="meaning" name="meaning" maxlength="1000" required autocomplete="off" placeholder="What does it mean?">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="pronunciation">Pronunciation hint <span class="optional">Optional</span></label>
+            <input id="pronunciation" name="pronunciation" maxlength="1000" autocomplete="off" placeholder="Write a sound hint in a way that helps you">
+          </div>
+
+          <div class="field">
+            <label for="context">When would you use it? <span class="optional">Optional</span></label>
+            <textarea id="context" name="context" maxlength="2000" rows="2" placeholder="Who are you speaking to? What is happening?"></textarea>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="example">Example or reply <span class="optional">Optional</span></label>
+              <textarea id="example" name="example" maxlength="2000" rows="2" placeholder="A short exchange or example"></textarea>
+            </div>
+            <div class="field">
+              <label for="speaker">Speaker label <span class="optional">Optional</span></label>
+              <input id="speaker" name="speaker" maxlength="120" autocomplete="off" placeholder="For example, Me or Speaker 1">
+            </div>
+          </div>
+
+          <div class="recording-box">
+            <div class="recording-heading">
+              <span class="recording-icon" aria-hidden="true">●</span>
+              <div>
+                <strong>Voice recording</strong>
+                <span id="recordingStatus">No audio added</span>
+              </div>
+            </div>
+            <div class="recording-actions">
+              <button id="recordButton" class="button button-secondary" type="button">Record voice</button>
+              <button id="stopButton" class="button button-quiet" type="button" disabled>Stop</button>
+              <label class="button button-quiet upload-button" for="audioFile">Choose audio</label>
+              <input id="audioFile" class="visually-hidden" type="file" accept="audio/*">
+            </div>
+            <audio id="audioPreview" class="audio-preview" controls hidden></audio>
+            <label class="consent-row" for="recordingConsent">
+              <input id="recordingConsent" type="checkbox">
+              <span>I have permission to save this speaker’s voice recording.</span>
+            </label>
+          </div>
+
+          <div class="form-footer">
+            <p id="formMessage" class="form-message" role="status" aria-live="polite">Entries stay on this device.</p>
+            <div class="form-actions">
+              <button id="cancelEdit" class="button button-quiet" type="button" hidden>Cancel edit</button>
+              <button id="saveButton" class="button button-primary" type="submit">Save entry</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <section class="library" aria-labelledby="library-title">
+        <div class="library-heading">
+          <div>
+            <p class="eyebrow">Your collection</p>
+            <h2 id="library-title">Saved words <span id="entryCount" class="count">0</span></h2>
+          </div>
+          <label class="search-box" for="searchInput">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <input id="searchInput" type="search" placeholder="Search words" autocomplete="off">
+          </label>
+        </div>
+        <div id="entries" class="entries" aria-live="polite"></div>
+        <div id="emptyState" class="empty-state" hidden>
+          <span class="empty-mark" aria-hidden="true">Aa</span>
+          <h3>Your wordbook starts here.</h3>
+          <p>Add a word you remember, then record how it sounds.</p>
+        </div>
+      </section>
+    </div>
+
+    <footer class="page-footer">
+      <span>Every entry is a beginning.</span>
+      <span>Unreviewed words are marked for later checking.</span>
+    </footer>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
