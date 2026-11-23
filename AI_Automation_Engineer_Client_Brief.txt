@@ -1,0 +1,34 @@
+# AI Automation Engineer for Product Development — Client Brief Analysis
+
+## The problem
+The client wants to develop a new digital product end to end, but the exact problem the product should solve and the users it should serve are not described. They need leadership across product architecture, AI workflows, integration, and delivery of a reliable prototype.
+
+## The deliverable
+A functional digital product prototype, including:
+- Product architecture
+- AI agent workflows
+- Integrations with relevant tools or systems
+- A scalable and reliable implementation
+- Stakeholder collaboration and product requirements refinement
+
+The engagement is full-time for 1–3 months, with possible extension based on project success.
+
+## The deadline
+The brief gives a flexible 1–3 month engagement period, but it does not provide an exact start date, prototype deadline, or milestone schedule.
+
+## Three clarifying questions
+1. Who is the target user, what problem does the product solve for them, and what measurable outcome would make the prototype successful?
+2. What systems, data sources, and third-party tools must the AI agents integrate with, and what data, security, or compliance constraints apply?
+3. What is the minimum product scope for the prototype, and which architecture, delivery, testing, and deployment decisions will be mine to make?
+
+## What they said vs. what they actually need
+The client says they need an AI Automation Engineer, but what they may actually need is a technical product lead who can turn a vague idea into a validated, focused prototype and avoid overbuilding.
+
+## Red flags noticed
+- The scope is extremely broad: “lead end-to-end development” could include discovery, architecture, engineering, integration, testing, and stakeholder management.
+- The brief does not define the users, problem, target workflow, or MVP.
+- No success metrics or acceptance criteria are provided.
+- No technology stack, existing platform, integration list, or budget is stated.
+- “AI agents” is undefined; the required level of autonomy, data access, and reliability is unclear.
+- The 1–3 month duration is potentially too short for an undefined, end-to-end product.
+- “Potential for extension based on project success” is vague unless success and evaluation criteria are agreed upon.
