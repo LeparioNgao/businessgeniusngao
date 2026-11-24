@@ -1,0 +1,97 @@
+Most developers lose projects not because their code is bad, but because they built the wrong thing. A client brief tells you what someone wants. Your job is to decode what they actually need. These are often different. Today you learn how to read a brief so you never build the wrong thing.
+
+By the end of today you will have
+1. Understood how to break down a client brief into its key parts
+2. Written clarifying questions for three different briefs
+3. Identified common red flags in freelance job postings
+4. Written a plain-language summary of a live brief
+
+What a Client Brief Actually Is
+A client brief is a job posting or description of what someone wants built. It can come from Upwork, a direct message, a WhatsApp voice note, or a formal project document. The format does not matter. What matters is what it tells you and what it does not tell you.
+
+Most briefs are written by non-technical people who know what outcome they want but not how to describe it technically. Your job is not to judge how they wrote it. Your job is to extract the signal from the noise.
+
+A client brief is like a customer describing a problem to a Jua Kali technician.
+They say "my gate is making a noise when it opens." They do not say "the hinges have worn grooves causing metal-on-metal contact." They describe the symptom. The technician asks the right questions, diagnoses the underlying problem, and fixes it. You read a client brief the same way. Start with what they said. Work towards what they actually need.
+
+The Four Parts of Every Brief
+Every brief contains four things, even if they are buried or implied:
+
+1. The problem: what is broken, missing, or inefficient? What is causing them pain?
+
+2. The deliverable: what do they want you to hand them when you are done? A script, a web page, a dashboard, a report?
+
+3. The deadline: when do they need it? Is there a hard deadline or a soft one?
+
+4. What is unclear: what is missing? What did they not say that you need to know before you can start?
+
+Identifying what is unclear is the most important skill. It is the difference between a developer who builds exactly what the client needs and one who delivers something and gets a revision request immediately.
+
+Reading Three Sample Briefs
+Work through these three briefs. For each one, identify the problem, the deliverable, the deadline, and what is unclear. Then write three clarifying questions.
+
+Brief 1: "I need a bot"
+"Hello, I need someone to build me a bot that can reply to customer messages automatically. We sell agricultural inputs in Kenya and get a lot of WhatsApp messages asking about prices and stock. Budget is flexible. I need it ASAP."
+
+Working through Brief 1
+Problem: Too many manual WhatsApp replies taking up staff time.
+Deliverable: Some kind of automated reply system. ("Bot" is vague.)
+Deadline: "ASAP" is not a deadline. This needs a specific date.
+What is unclear: What platform is "WhatsApp"? The WhatsApp Business API? A third-party tool? What data does the bot pull prices from? A spreadsheet? A database? A manual list? Who maintains the price list? How many products are there? What happens when a question falls outside the bot's knowledge?
+
+Brief 2: "Data dashboard"
+"We want a dashboard showing our sales data. We currently use Excel and want something more visual. Our team is not technical. Budget is KES 25,000. Timeline: 2 weeks."
+
+Working through Brief 2
+Problem: Their Excel data is not visual or easy to share.
+Deliverable: A dashboard. (Web-based? Printed report? Updated manually or automatically?)
+Deadline: 2 weeks. Specific enough.
+What is unclear: What is in the Excel file? How many rows? How often does it update? Do they want to update it themselves? What specific charts or metrics do they care about? Who will view the dashboard? On what device?
+
+Brief 3: "Build me an app like Uber but for deliveries"
+"I want to create a delivery app for Nairobi. It should work like Uber but for packages. Riders can sign up, businesses post deliveries, riders accept them. We want to launch in 3 months."
+
+Working through Brief 3
+Problem: No efficient local delivery platform with a two-sided marketplace.
+Deliverable: A two-sided marketplace app (customer + rider apps, plus probably admin).
+Deadline: 3 months. Probably not realistic for the scope described.
+What is unclear: This is a 12-24 month project, not 3 months. What is the MVP? Do they understand the scope? Do they have funding? Are they looking for a no-code solution or a custom build? Have they done any market research? What payment integration do they want? This brief needs a serious scoping conversation before any proposal is written.
+
+Red Flags in Client Briefs
+Some briefs are not worth pursuing. Learning to identify red flags early saves you from wasted proposals and bad client relationships.
+
+"We need it ASAP" with no specific date means they either do not know what they need or they are testing multiple developers to see who responds first. Always convert to a specific date before accepting.
+
+"Budget is flexible" often means they have a specific number in mind and are hoping you quote below it. Ask for a range directly.
+
+"Build me the next [big app]" is almost always a scope mismatch. They are describing a company, not a project. Either scope it down to an MVP with them, or decline.
+
+"We had a developer but they disappeared" sometimes means the client is difficult to work with. Ask what happened to the previous developer before you quote.
+
+No response to clarifying questions is a major red flag. If a client cannot answer basic questions about their own project, they are not ready to hire you yet.
+
+Red flags are not automatic disqualifiers. A brief with red flags can become a good project if you ask the right questions and the client responds well. Red flags tell you where to probe, not where to run.
+
+What the Client Says vs What They Actually Need
+Clients describe their solution, not their problem. They have already tried to diagnose what they need. Your job is to go one level deeper and understand the problem underneath their proposed solution.
+
+Brief 1 says "I need a bot." What they actually need is fewer staff hours spent on repetitive WhatsApp messages. A bot is one solution. A well-organized FAQ page, a WhatsApp catalog, or a simple price list might solve 80% of the problem at 10% of the cost. A good developer surfaces these options. A bad developer just builds the bot and delivers exactly what was asked for, even if it was the wrong thing.
+
+Always ask: what will success look like for you in 6 months? Their answer tells you the actual goal.
+
+Today's Exercise
+Go to Upwork or any freelance platform and find a live brief for a developer. Do not apply. Just read it.
+
+Write your analysis in a document or text file:
+
+The problem (in your own words)
+The deliverable (what they want handed to them)
+The deadline (if stated)
+Three clarifying questions you would ask before writing a proposal
+One sentence: what they said vs what they actually need
+Any red flags you noticed
+Keep this brief. You will use it tomorrow to write a proposal.
+
+Outcome: You can read a client brief and extract what actually matters. You know the four parts of every brief, how to spot red flags, and how to identify what is missing before you start building.
+
+Outcome: You can read a client brief and extract what actually matters. You know the four parts of every brief, how to spot red flags, and how to identify what is missing before you start building.

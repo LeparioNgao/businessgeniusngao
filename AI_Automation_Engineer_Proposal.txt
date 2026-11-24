@@ -1,0 +1,16 @@
+Your goal is to turn a new digital product idea into a reliable, scalable prototype, but the users and core workflow are not yet defined. I can help you clarify that scope and deliver a focused, testable product instead of an overbuilt system.
+
+I assume the prototype is for one clearly identified user group and uses existing AI services, your available data, and up to three third-party integrations. I will work with you to refine the problem, requirements, and success criteria first, so engineering decisions support measurable outcomes.
+
+I will define the product architecture, implement the core AI agent workflows, connect required tools and data sources, and build a deployable prototype with basic testing and documentation.
+
+Deliverables:
+- Refined product requirements and MVP scope
+- Product architecture and technical plan
+- Working AI-agent prototype
+- Integration setup and configuration documentation
+- Deployment guidance and stakeholder handover
+
+Investment: KES 240,000 for a 4-week first phase, with 50% paid before kickoff and 50% paid at delivery. I can continue for up to 8 additional weeks if the MVP performs as agreed. This estimate assumes no major infrastructure build or custom model training.
+
+We can begin with a 60-minute discovery session. Who are the primary users, and what decision or task should the prototype improve for them?
