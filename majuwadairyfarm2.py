@@ -106,15 +106,16 @@ for cow_id in (1, 12, 27):
     )
 
 print("\nSEVEN-DAY SALES AND FEED FORECAST")
-for future_day, predicted_milk, feed_required in forecast_demand():
+weekly_forecast = forecast_demand()
+for future_day, predicted_milk, feed_required in weekly_forecast:
     print(
         f"Day {future_day}: {predicted_milk:,.0f} L milk | "
         f"{feed_required:,.0f} kg feed"
     )
 
 # A manager can use these outputs to plan buyers, feed orders, and inspections.
-weekly_milk = sum(item[1] for item in forecast_demand())
-weekly_feed = sum(item[2] for item in forecast_demand())
+weekly_milk = sum(item[1] for item in weekly_forecast)
+weekly_feed = sum(item[2] for item in weekly_forecast)
 print("\nMANAGER'S PLANNING TOTALS")
 print(f"Expected milk to sell: {weekly_milk:,.0f} L")
 print(f"Feed to prepare/order: {weekly_feed:,.0f} kg")
