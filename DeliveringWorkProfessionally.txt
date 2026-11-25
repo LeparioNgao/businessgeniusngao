@@ -1,0 +1,89 @@
+How you deliver work is as important as the work itself. A great project delivered badly creates doubt. An average project delivered professionally creates confidence. Today you learn how to package and present your work so clients take delivery, pay you, and come back.
+
+By the end of today you will have
+1. Understood what a professional delivery package looks like
+2. Written a delivery message for a completed project
+3. Learned how to respond to revision requests without losing money
+4. Understood the difference between bug fixes and new features
+
+What You Hand Over at the End of a Project
+When a project is complete, you do not just send a GitHub link and say "here it is." A professional delivery has four parts:
+
+1. Clean code: no commented-out blocks, no debug print statements, no hardcoded values that should be in a config file. The code should read as if you want someone else to maintain it.
+
+2. A README: setup instructions, how to run it, what it does, and what assumptions you made. Written for someone who has never seen your code.
+
+3. A delivery message: a short message explaining what you built, confirming it meets what was agreed, and telling them exactly what to do next.
+
+4. Written sign-off: before you release the final payment milestone, you need the client to confirm in writing that they are satisfied. "Looks good" on WhatsApp counts. An email confirmation is better. Silence does not count.
+
+A Jua Kali metalworker does not hand over a gate and disappear.
+They walk the customer through it. They show them how the latch works, confirm the hinges are right, explain what maintenance to do. They get a confirmation that the customer is happy before they leave the site. You do the same thing with your code delivery.
+
+Writing the Delivery Message
+A delivery message does four things in order:
+
+1. Tells them what is ready
+2. Shows them how to access or run it
+3. Confirms what was delivered matches what was agreed
+4. Tells them what to do next (review it, request changes, sign off)
+5. Here is an example for the WhatsApp bot from Days 6 and 7:
+
+Example Delivery Message
+"Hello [Client Name],
+
+The automated WhatsApp reply system is ready. Here is a summary of what was delivered:
+
+- Replies automatically to messages asking about prices, stock, and delivery times
+- Admin page at [URL] lets you update your product list and prices without touching code
+- Messages outside the FAQ scope are flagged to your team with a daily digest
+
+I have set up a test number you can use to try it: [number]. Send it any of the common questions your customers ask.
+
+This covers everything in the original brief. Please review it over the next two business days. If everything looks good, send me a message confirming and I will invoice for the remaining 50%.
+
+Let me know if you have questions."
+
+Notice it is specific. It names the deliverables. It tells them how to test it. It sets a time frame for review. It tells them what sign-off looks like. Short, clear, professional.
+
+Handling Revision Requests
+Revisions are part of the job. But there is a difference between a revision (fixing something that does not work as agreed) and a new feature (adding something that was not in the scope).
+
+Revision (included)
+"The bot is not replying to messages about delivery time."
+
+Delivery time questions were in the agreed scope. If they are not working, that is your bug to fix at no extra charge.
+
+New feature (extra cost)
+"Can we add a feature where the bot also takes orders and updates our stock spreadsheet automatically?"
+
+Order-taking was never in the brief. This is a separate project.
+When a revision request comes in, read it carefully and decide: is this in the scope I quoted, or is this new? If it is in scope, fix it and update them. If it is new, respond warmly but clearly:
+
+Responding to a feature request (not a bug)
+"That is a great idea and would work well with what we have already built. Adding order-taking and stock sync is outside the original brief, so it would be quoted separately. I can scope it out and send you a price if you want to move forward. For the current system, everything in the original brief is working as agreed. Ready for sign-off on that when you are."
+Respond to all revision requests the same day. Even if you cannot fix it immediately, acknowledge it. "Received, I will look at this and get back to you by end of day" keeps the relationship professional and the client calm.
+
+Preparing Code for Delivery
+
+Before you send anything, run through this list:
+
+1. Delete all commented-out code that is not needed
+2. Remove all print("DEBUG:"...) statements
+3. Check that sensitive values (keys, passwords) are in .env and .env is in .gitignore
+4. Make sure the README is up to date with the actual current setup steps
+5. Run the project one more time from a clean state to confirm it works
+6. Tag the release on GitHub: git tag v1.0 && git push --tags
+7. Tagging the delivery version on GitHub is a small touch that shows professionalism. The client can always come back to the exact code you delivered, even if you continue working on it later.
+
+Today's Exercise
+Take one of your Phase I projects and build a complete delivery package for it as if you were handing it to a paying client.
+
+Clean the code (remove debug statements, commented-out blocks)
+Update (or write) the README with accurate setup and usage instructions
+Write a delivery message for it as if sending to the client who commissioned it
+Write one sentence describing what a revision would look like vs what a new feature would look like for this project
+Tag it with git tag v1.0 and push
+This is practice for doing it on every project going forward.
+
+Outcome: You can package and deliver work in a way that satisfies clients and creates the conditions for repeat business and referrals.
