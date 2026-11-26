@@ -1,0 +1,119 @@
+Scope creep is the slow expansion of a project beyond what was originally agreed. It kills freelance projects. It kills profit margins. It kills the relationship between developer and client. You prevent it with clear written agreements before you start. Today you build the habit of writing those agreements.
+
+By the end of today you will have
+1. Understood what scope creep is and how it starts
+2. Written a scope statement for a sample project
+3. Structured a 50/50 payment arrangement
+4. Written a simple payment terms statement
+5. Understood how escrow works on Upwork and Fiverr
+
+What Scope Creep Is and How It Starts
+Scope creep is when a project grows beyond what was agreed without the budget growing to match. It almost never happens all at once. It happens in small steps.
+
+The three most common ways it starts:
+
+1. The "just one more thing" request. "While you're in there, could you also add X? It should only take a minute." It never takes a minute. And once you say yes to one, the next one comes.
+
+2. Vague deliverables. If your scope says "a dashboard," the client might picture something completely different from what you build. When you deliver, they say "I thought it would also include Y." Prevent this by being specific about what the deliverables are and what they are not.
+
+3. No written agreement. When the project is verbal, there is no record of what was agreed. The client remembers one thing. You remember another. Without a written scope, the client is always right, even when they are wrong.
+
+A Jua Kali contractor who quotes for a gate and then builds a gate and a fence and a guard post without updating the contract does not get paid for the fence and the guard post.
+They quote for a gate. If the scope changes, the price changes. Put it in writing before you build the extra thing.
+
+Writing a Scope Statement
+A scope statement has two sections: what is included and what is not included. The second section is as important as the first. Clients rarely know what is out of scope because they do not know what they do not know. You have to tell them.
+
+Example Scope Statement: WhatsApp Bot Project
+
+Included:
+Automated replies to questions about prices and stock availability
+Admin page to update the product list without code
+Daily digest of messages that required human follow-up
+30-minute handover call
+
+Not included:
+Order processing or payment collection
+Integration with any stock management software
+WhatsApp Business API account setup (client handles this)
+Changes to the product list format after handover
+Ongoing maintenance or updates after delivery
+
+Send this with your proposal, or at minimum before you start work. Ask the client to confirm it in writing. "Does this scope match what you need?" A yes from them is your protection.
+
+Payment Structure: 50% Upfront, 50% on Delivery
+Never start work without a deposit. Fifty percent upfront is the standard for freelance development work. It protects you if the client disappears. It confirms the client is serious. It gives you working capital.
+
+The structure:
+
+50% upfront: paid before you write a single line of code
+50% on delivery: paid after the client confirms everything in scope is working
+For larger projects (over KES 100,000), break it into three: 33% upfront, 33% at a defined midpoint milestone, 34% on delivery. This reduces risk on both sides.
+
+On M-Pesa, send a payment request message before they pay. Something like: "Please send KES 17,500 (50% deposit) to [Paybill/Number]. This confirms we can start work. I will begin once the deposit is received." This sets expectations clearly and gives you a record.
+
+Your Payment Terms Statement
+Every proposal you send should include payment terms. Short, clear, specific. Here is a template:
+
+Payment Terms
+50% deposit (KES [amount]) due before work begins.
+Remaining 50% (KES [amount]) due within 2 business days of delivery confirmation.
+Work does not start until the deposit is received.
+Delivery timeline of [X] working days starts from the date the deposit clears.
+Include this in every proposal. Do not wait until the client asks about payment. Setting the terms in the proposal prevents the conversation from becoming awkward later.
+
+Handling Late Payment
+If the final 50% has not arrived within 5 business days of delivery, send a short, professional follow-up:
+
+Late Payment Follow-up (Day 5)
+Hello [Name], just following up on the balance of KES [amount] for the [project name] project. You confirmed delivery on [date]. If there are any issues with the work that need attention before you can pay, please let me know and I will address them. Otherwise, payment to [number/paybill] would be great. Thank you.
+Keep it professional. Never aggressive. You want the money and you want the relationship. Give them a clear path to resolve it.
+
+If there is no response after a second follow-up, reduce scope on future projects with this client. Or stop taking projects from them. Your time is your revenue. Chasing payment for weeks is not profitable regardless of the project rate.
+
+Escrow on Upwork and Fiverr
+Upwork and Fiverr solve the late payment problem with escrow. The client deposits the project budget before you start. It sits with the platform. When you deliver and the client approves, the platform releases the money to you.
+
+This is why starting on platforms makes sense when you are building your first client base. The payment risk is nearly zero. As you grow a reputation and build direct client relationships, you move to your own payment terms. The platform's fees (20% on Upwork for new clients) are worth the protection when you are starting out.
+
+Never agree to work outside a platform escrow if that platform is where you connected. "Let's move to WhatsApp and I'll pay you directly, it's faster" is a common way for clients to avoid platform escrow and disappear after delivery. Platforms have rules against this for a reason.
+
+Today's Exercise
+Write a complete project agreement for a sample engagement. Use this scenario: a small school wants a Python script that reads their student attendance Excel file and sends an automated SMS to parents when a student has been absent 3 or more days that week. Budget: KES 22,000. Timeline: 7 working days.
+
+Your agreement must include:
+
+Scope statement: what is included and what is not included (at least 3 items each)
+Payment terms: deposit amount, final amount, when each is due
+Timeline: start date (when deposit clears), delivery date
+One sentence on what happens if the client requests changes after delivery that were not in scope
+Keep it to one page. Plain language. No legal jargon. This should be something you can send on WhatsApp or email and the client immediately understands it.
+
+Sample Project Agreement: School Attendance SMS Script
+
+Client: [School name]    Developer: [Your name]    Date: [date]
+
+Project: I will build a Python script that reads the school's agreed Excel attendance file and sends an SMS to a student's parent when the student has been absent at least 3 days that school week.
+
+Included:
+- Read and process one agreed Excel file format and count weekly absences for each student.
+- Send alerts through the school's existing SMS provider to the parent phone numbers in the file.
+- Set up a weekly run on one school computer, test with sample data, and provide the script with a brief handover.
+
+Not included:
+- Cleaning historical records or supporting other spreadsheet formats.
+- Creating an SMS provider account, supplying SMS credits, or paying provider charges.
+- Building a dashboard, adding other software integrations, or hosting the script online.
+- Ongoing support or changes after handover.
+
+The school will provide the agreed Excel file, accurate parent phone numbers, access to its SMS provider, and confirmation that it may contact parents by SMS.
+
+Fee and payment: Total cost is KES 22,000. KES 11,000 is due before work starts; the remaining KES 11,000 is due within 2 business days after delivery confirmation. Work starts when the deposit clears.
+
+Timeline: Start date: [date deposit clears]. Delivery date: [date, 7 working days after the start date, excluding weekends and public holidays]. I will confirm the calendar delivery date once the deposit clears.
+
+Any changes requested after delivery that are not listed as included will be quoted separately and started only after you approve the added cost and timeline.
+
+To confirm, reply: Agreed, and provide the school name, your name, and the date.
+
+Outcome: You can protect yourself from scope creep and unpaid work from the start of every project. Every project you take from here has a written scope and clear payment terms before work begins.
